@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROV HMI - Tuna II</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="hmi-container">
+        <!-- Header with Logo and Title -->
+        <header class="hmi-header">
+            <div class="logo-section">
+                <div class="company-logo">LOGO</div>
+            </div>
+            <div class="header-title">ROV HMI - Tuna II</div>
+            <div class="header-time" id="current-time">23/04/2002 11:33:34</div>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tab-navigation">
+            <button class="tab-button active" data-tab="dashboard">DASHBOARD</button>
+            <button class="tab-button" data-tab="diagnostics">DIAGNOSTICS</button>
+            <button class="tab-button" data-tab="alarm-history">ALARM HISTORY</button>
+            <button class="tab-button" data-tab="waveform">WAVEFORM</button>
+            <button class="tab-button" data-tab="cameras">CAMERAS</button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard">
+                <div class="dashboard-layout">
+                    <!-- Left Panel - System Status -->
+                    <div class="left-panel">
+                        <div class="status-section">
+                            <div class="status-item">
+                                <label>Depth (m)</label>
+                                <div class="value-box blue">100,0</div>
+                            </div>
+                            <div class="status-item">
+                                <label>Altitude (m)</label>
+                                <div class="value-box blue">200,0</div>
+                            </div>
+                            <div class="status-item">
+                                <label>TCU Temperature</label>
+                                <div class="value-box blue">60 °C</div>
+                                <div class="gauge horizontal">
+                                    <div class="gauge-track">
+                                                                        <div class="gauge-fill gauge-fill-30"></div>
+                                <div class="gauge-needle gauge-needle-30"></div>
+                                    </div>
+                                    <div class="gauge-labels">
+                                        <span>0</span>
+                                        <span>50</span>
+                                        <span>100</span>
+                                        <span>150</span>
+                                        <span>200</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <label>Hydraulic Pressure</label>
+                                <div class="value-box blue">100 bar</div>
+                                <div class="gauge horizontal">
+                                    <div class="gauge-track">
+                                                                        <div class="gauge-fill gauge-fill-25"></div>
+                                <div class="gauge-needle gauge-needle-25"></div>
+                                    </div>
+                                    <div class="gauge-labels">
+                                        <span>0</span>
+                                        <span>100</span>
+                                        <span>200</span>
+                                        <span>300</span>
+                                        <span>400</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <label>Hydraulic Compensator</label>
+                                <div class="value-box blue">100%</div>
+                                <div class="gauge horizontal">
+                                    <div class="gauge-track">
+                                        <div class="gauge-fill gauge-fill-100"></div>
+                                    </div>
+                                    <div class="gauge-labels">
+                                        <span>0</span>
+                                        <span>25</span>
+                                        <span>50</span>
+                                        <span>75</span>
+                                        <span>100</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="status-item">
+                                <label>Turns Counter</label>
+                                <div class="value-box blue">0,6</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center Panel - ROV Visualization -->
+                    <div class="center-panel">
+                        <div class="rov-visualization">
+                            <div class="compass-section">
+                                <div class="compass-title">COMPASS 245,3°</div>
+                                <div class="compass-dial">
+                                    <div class="compass-needle compass-needle-245"></div>
+                                    <div class="compass-markings">
+                                        <span class="marking marking-0">0</span>
+                                        <span class="marking marking-45">45</span>
+                                        <span class="marking marking-90">90</span>
+                                        <span class="marking marking-135">135</span>
+                                        <span class="marking marking-180">180</span>
+                                        <span class="marking marking-225">225</span>
+                                        <span class="marking marking-270">270</span>
+                                        <span class="marking marking-315">315</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rov-wireframe">
+                                <div class="wireframe-model"></div>
+                                <div class="thruster-indicators">
+                                    <div class="thruster thruster-top-left">50</div>
+                                    <div class="thruster thruster-top-right">50</div>
+                                    <div class="thruster thruster-bottom-left">50</div>
+                                    <div class="thruster thruster-bottom-right">50</div>
+                                </div>
+                            </div>
+                            <div class="alarms-panel">
+                                <div class="alarms-title">ALARMS</div>
+                                <div class="alarms-count">Active Alarms: 0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel - Navigation Data -->
+                    <div class="right-panel">
+                        <div class="nav-section">
+                            <div class="nav-item">
+                                <label>DEPTH</label>
+                                <div class="value-box dark-blue">40 m</div>
+                            </div>
+                            <div class="nav-item">
+                                <label>ALTITUDE</label>
+                                <div class="value-box dark-blue">50,00 m</div>
+                            </div>
+                            <div class="nav-item">
+                                <label>ROLL</label>
+                                <div class="value-box dark-blue">1,0 °</div>
+                            </div>
+                            <div class="nav-item">
+                                <label>PITCH</label>
+                                <div class="value-box dark-blue">4,0 °</div>
+                            </div>
+                            <div class="nav-item">
+                                <label>TURNS</label>
+                                <div class="value-box dark-blue">1,7</div>
+                            </div>
+                            <div class="nav-item">
+                                <label>GAIN</label>
+                                <div class="value-box dark-blue">2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagnostics Tab -->
+            <div class="tab-content" id="diagnostics">
+                <div class="diagnostics-layout">
+                    <div class="diagnostics-header">Diagnostic Display - Page 1</div>
+                    
+                    <div class="diagnostics-grid">
+                        <!-- Pilot Panel -->
+                        <div class="diagnostic-panel yellow-border">
+                            <div class="panel-header">
+                                <span class="panel-title">Pilot Panel</span>
+                                <span class="panel-type">(input)</span>
+                            </div>
+                            <div class="panel-content two-column">
+                                <div class="column">
+                                    <div class="diagnostic-item">
+                                        <label>Joystick DIVE/SURFACE (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                    <div class="diagnostic-item">
+                                        <label>Joystick FWD/REV (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                    <div class="diagnostic-item">
+                                        <label>Joystick PORT/STBD (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                    <div class="diagnostic-item">
+                                        <label>Joystick ROTATE (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                    <div class="diagnostic-item">
+                                        <label>Trim VERT PORT (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="diagnostic-item">
+                                        <label>Trim VERT STBD (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                    <div class="diagnostic-item">
+                                        <label>Trim FWD/REV (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                    <div class="diagnostic-item">
+                                        <label>Trim HEAD CW/CCW (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                    <div class="diagnostic-item">
+                                        <label>Trim DEPTH (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                    <div class="diagnostic-item">
+                                        <label>Trim LATERAL (Volt)</label>
+                                        <div class="value-box yellow">0,0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vehicle Actuators -->
+                        <div class="diagnostic-panel red-border">
+                            <div class="panel-header">
+                                <span class="panel-title">Vehicle Actuators</span>
+                                <span class="panel-type">(output)</span>
+                            </div>
+                            <div class="panel-content">
+                                <div class="sub-section">
+                                    <h4>TCU</h4>
+                                    <div class="actuator-grid">
+                                        <div class="actuator-item">
+                                            <label>Thruster Port Aft (%)</label>
+                                            <div class="value-box red">50,0 (T1)</div>
+                                        </div>
+                                        <div class="actuator-item">
+                                            <label>Thruster Port Fore (%)</label>
+                                            <div class="value-box red">50,0 (T2)</div>
+                                        </div>
+                                        <div class="actuator-item">
+                                            <label>Thruster Stbd Aft (%)</label>
+                                            <div class="value-box red">50,0 (T3)</div>
+                                        </div>
+                                        <div class="actuator-item">
+                                            <label>Thruster Stbd Fore (%)</label>
+                                            <div class="value-box red">50,0 (T4)</div>
+                                        </div>
+                                        <div class="actuator-item">
+                                            <label>Thruster Vert Port (%)</label>
+                                            <div class="value-box red">50,0 (T5)</div>
+                                        </div>
+                                        <div class="actuator-item">
+                                            <label>Thruster Vert Stbd (%)</label>
+                                            <div class="value-box red">50,0 (T6)</div>
+                                        </div>
+                                        <div class="actuator-item">
+                                            <label>Tool 1 (%)</label>
+                                            <div class="value-box red">0 (T7)</div>
+                                        </div>
+                                        <div class="actuator-item">
+                                            <label>Tool 2 (%)</label>
+                                            <div class="value-box red">0 (T8)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Lights</h4>
+                                    <div class="lights-grid">
+                                        <div class="light-item">
+                                            <label>Light #1 (%)</label>
+                                            <div class="value-box red">70</div>
+                                        </div>
+                                        <div class="light-item">
+                                            <label>Light #2 (%)</label>
+                                            <div class="value-box red">50</div>
+                                        </div>
+                                        <div class="light-item">
+                                            <label>Light #3 (%)</label>
+                                            <div class="value-box red">100</div>
+                                        </div>
+                                        <div class="light-item">
+                                            <label>Light #4 (%)</label>
+                                            <div class="value-box red">30</div>
+                                        </div>
+                                        <div class="light-item">
+                                            <label>Light #5 (%)</label>
+                                            <div class="value-box red">100</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vehicle Analog Sensors -->
+                        <div class="diagnostic-panel blue-border">
+                            <div class="panel-header">
+                                <span class="panel-title">Vehicle Analog Sensors</span>
+                                <span class="panel-type">(input)</span>
+                            </div>
+                            <div class="panel-content">
+                                <div class="sub-section">
+                                    <h4>Pressure</h4>
+                                    <div class="sensor-item">
+                                        <label>Depth (m)</label>
+                                        <div class="value-box blue">40,0</div>
+                                    </div>
+                                    <div class="sensor-item">
+                                        <label>Hydraulic Press (bar)</label>
+                                        <div class="value-box blue">50,0</div>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Temperature</h4>
+                                    <div class="sensor-item">
+                                        <label>TCU Temperature (°C)</label>
+                                        <div class="value-box blue">34,0</div>
+                                    </div>
+                                    <div class="sensor-item">
+                                        <label>HPU Temperature (°C)</label>
+                                        <div class="value-box blue">32,0</div>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Compensators</h4>
+                                    <div class="compensator-grid">
+                                        <div class="compensator-item">
+                                            <label>Compensator 1 (%)</label>
+                                            <div class="value-box blue">96</div>
+                                        </div>
+                                        <div class="compensator-item">
+                                            <label>Compensator 2 (%)</label>
+                                            <div class="value-box blue">98</div>
+                                        </div>
+                                        <div class="compensator-item">
+                                            <label>Compensator 3 (%)</label>
+                                            <div class="value-box blue">81</div>
+                                        </div>
+                                        <div class="compensator-item">
+                                            <label>Compensator 4 (%)</label>
+                                            <div class="value-box blue">74</div>
+                                        </div>
+                                        <div class="compensator-item">
+                                            <label>Compensator 5 (%)</label>
+                                            <div class="value-box blue">88</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vehicle Sensors via Serial Interface -->
+                        <div class="diagnostic-panel green-border">
+                            <div class="panel-header">
+                                <span class="panel-title">Vehicle Sensors via Serial Interface</span>
+                                <span class="panel-type">(input)</span>
+                            </div>
+                            <div class="panel-content">
+                                <div class="sub-section">
+                                    <h4>Altimeter</h4>
+                                    <div class="sensor-item">
+                                        <label>Altitude (m)</label>
+                                        <div class="value-box green">50,0</div>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>FO Gyro</h4>
+                                    <div class="sensor-item">
+                                        <label>FOG Heading (deg)</label>
+                                        <div class="value-box green">245,3</div>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>AHRS</h4>
+                                    <div class="sensor-item">
+                                        <label>Mag Heading (deg)</label>
+                                        <div class="value-box green">245,3</div>
+                                    </div>
+                                    <div class="sensor-item">
+                                        <label>Pitch (deg)</label>
+                                        <div class="value-box green">4,0</div>
+                                    </div>
+                                    <div class="sensor-item">
+                                        <label>Roll (deg)</label>
+                                        <div class="value-box green">1,0</div>
+                                    </div>
+                                    <div class="sensor-item">
+                                        <label>Mag field (mGauss)</label>
+                                        <div class="value-box green">245,0</div>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Turns Counter</h4>
+                                    <div class="sensor-item">
+                                        <label>Turns Counter</label>
+                                        <div class="value-box green">0,70</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alarm History Tab -->
+            <div class="tab-content" id="alarm-history">
+                <div class="alarm-history-layout">
+                    <div class="alarm-history-header">Alarm History</div>
+                    <div class="alarm-content">
+                        <div class="alarm-list">
+                            <div class="alarm-item">
+                                <span class="alarm-time">23/04/2002 11:33:34</span>
+                                <span class="alarm-message">- HPU LEAK</span>
+                            </div>
+                        </div>
+                        <div class="alarm-details">
+                            <!-- Alarm details would go here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waveform Tab -->
+            <div class="tab-content" id="waveform">
+                <div class="waveform-layout">
+                    <div class="waveform-header">Waveform Chart</div>
+                    <div class="waveform-charts">
+                        <div class="chart-container">
+                            <div class="chart-label">Joystick DIVE/SURFACE</div>
+                            <div class="chart-status">NaN</div>
+                            <div class="chart-area">
+                                <div class="y-axis">
+                                    <span>5.0</span>
+                                    <span>4.0</span>
+                                    <span>3.0</span>
+                                    <span>2.0</span>
+                                    <span>1.0</span>
+                                    <span>0.0</span>
+                                </div>
+                                <div class="chart-grid"></div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-label">Joystick DIVE/SURFACE</div>
+                            <div class="chart-status">NaN</div>
+                            <div class="chart-area">
+                                <div class="y-axis">
+                                    <span>1.0</span>
+                                    <span>0.5</span>
+                                    <span>0.0</span>
+                                    <span>-0.5</span>
+                                    <span>-1.0</span>
+                                </div>
+                                <div class="chart-grid"></div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-label">Joystick DIVE/SURFACE</div>
+                            <div class="chart-status">NaN</div>
+                            <div class="chart-area">
+                                <div class="y-axis">
+                                    <span>1.0</span>
+                                    <span>0.5</span>
+                                    <span>0.0</span>
+                                    <span>-0.5</span>
+                                    <span>-1.0</span>
+                                </div>
+                                <div class="chart-grid"></div>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-label">Joystick DIVE/SURFACE</div>
+                            <div class="chart-status">NaN</div>
+                            <div class="chart-area">
+                                <div class="y-axis">
+                                    <span>399.5</span>
+                                    <span>300.0</span>
+                                    <span>200.0</span>
+                                    <span>100.0</span>
+                                    <span>0.0</span>
+                                </div>
+                                <div class="chart-grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-controls">
+                        <div class="control-icon">🔍</div>
+                        <div class="control-icon">✋</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cameras Tab -->
+            <div class="tab-content" id="cameras">
+                <div class="cameras-layout">
+                    <div class="cameras-header">Camera Views</div>
+                    <div class="camera-grid">
+                        <div class="camera-slot" data-camera="1">
+                            <div class="camera-placeholder">Camera 1</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="2">
+                            <div class="camera-placeholder">Camera 2</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="3">
+                            <div class="camera-placeholder">Camera 3</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="4">
+                            <div class="camera-placeholder">Camera 4</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="5">
+                            <div class="camera-placeholder">Camera 5</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="6">
+                            <div class="camera-placeholder">Camera 6</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="7">
+                            <div class="camera-placeholder">Camera 7</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="8">
+                            <div class="camera-placeholder">Camera 8</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="9">
+                            <div class="camera-placeholder">Camera 9</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="10">
+                            <div class="camera-placeholder">Camera 10</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="11">
+                            <div class="camera-placeholder">Camera 11</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="12">
+                            <div class="camera-placeholder">Camera 12</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="13">
+                            <div class="camera-placeholder">Camera 13</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="14">
+                            <div class="camera-placeholder">Camera 14</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="15">
+                            <div class="camera-placeholder">Camera 15</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="camera-slot" data-camera="16">
+                            <div class="camera-placeholder">Camera 16</div>
+                            <div class="camera-selector">
+                                <select title="Select camera feed" aria-label="Camera feed selection">
+                                    <option value="front">Front Camera</option>
+                                    <option value="rear">Rear Camera</option>
+                                    <option value="port">Port Camera</option>
+                                    <option value="starboard">Starboard Camera</option>
+                                    <option value="top">Top Camera</option>
+                                    <option value="bottom">Bottom Camera</option>
+                                    <option value="manipulator">Manipulator Camera</option>
+                                    <option value="tool">Tool Camera</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="hmi-footer">
+            <div class="footer-left">
+                <div class="mode-indicators">
+                    <div class="mode-item">
+                        <label>HEADING MODE</label>
+                        <div class="mode-value manual">MANUAL</div>
+                    </div>
+                    <div class="mode-item">
+                        <label>VERTICAL MODE</label>
+                        <div class="mode-value manual">MANUAL</div>
+                    </div>
+                </div>
+                <div class="light-indicators">
+                    <label>LIGHTS</label>
+                    <div class="light-grid">
+                        <div class="light-indicator active">1</div>
+                        <div class="light-indicator active">2</div>
+                        <div class="light-indicator active">3</div>
+                        <div class="light-indicator active">4</div>
+                        <div class="light-indicator">5</div>
+                    </div>
+                </div>
+                <div class="tool-indicators">
+                    <div class="tool-item">
+                        <label>TOOL 1</label>
+                        <div class="tool-value">0 %</div>
+                    </div>
+                    <div class="tool-item">
+                        <label>TOOL 2</label>
+                        <div class="tool-value">0 %</div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-center">
+                <div class="navigation-buttons">
+                    <button class="nav-button">◀ ALARM HISTORY</button>
+                    <button class="nav-button">GRAPHS ▶</button>
+                </div>
+            </div>
+            <div class="footer-right">
+                <div class="system-branding">
+                    <div class="system-name">Tuna II •</div>
+                    <div class="company-name">DSND Consub</div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

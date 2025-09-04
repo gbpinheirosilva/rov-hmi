@@ -1,0 +1,916 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Main Container */
+.hmi-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(45deg, #001122, #000811);
+    border: 2px solid #0066cc;
+}
+
+/* Header */
+.hmi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0066cc;
+    padding: 10px 20px;
+    border-bottom: 2px solid #ff0000;
+    min-height: 60px;
+}
+
+.logo-section {
+    flex: 0 0 120px;
+}
+
+.company-logo {
+    background: #fff;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+}
+
+.header-title {
+    flex: 1;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.header-time {
+    flex: 0 0 150px;
+    text-align: right;
+    font-size: 16px;
+    color: #fff;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+    display: flex;
+    background: #003366;
+    border-bottom: 1px solid #0066cc;
+}
+
+.tab-button {
+    flex: 1;
+    background: #003366;
+    color: #fff;
+    border: none;
+    padding: 12px 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-right: 1px solid #0066cc;
+    transition: background-color 0.2s;
+}
+
+.tab-button:hover {
+    background: #004488;
+}
+
+.tab-button.active {
+    background: #0066cc;
+    color: #fff;
+}
+
+.tab-button:last-child {
+    border-right: none;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.tab-content {
+    display: none;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Dashboard Layout */
+.dashboard-layout {
+    display: flex;
+    height: 100%;
+    gap: 10px;
+    padding: 10px;
+}
+
+.left-panel, .right-panel {
+    flex: 0 0 250px;
+    background: #001122;
+    border: 1px solid #0066cc;
+    padding: 15px;
+}
+
+.center-panel {
+    flex: 1;
+    background: #000;
+    border: 1px solid #0066cc;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Status Items */
+.status-section, .nav-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.status-item, .nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.status-item label, .nav-item label {
+    font-size: 12px;
+    color: #ccc;
+    text-transform: uppercase;
+}
+
+.value-box {
+    padding: 8px 12px;
+    border: 2px solid;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 80px;
+}
+
+.value-box.blue {
+    border-color: #0066cc;
+    background: #001133;
+    color: #66aaff;
+}
+
+.value-box.dark-blue {
+    border-color: #0066cc;
+    background: #000811;
+    color: #fff;
+}
+
+.value-box.yellow {
+    border-color: #ffaa00;
+    background: #332200;
+    color: #ffaa00;
+}
+
+.value-box.red {
+    border-color: #ff0000;
+    background: #330000;
+    color: #ff6666;
+}
+
+.value-box.green {
+    border-color: #00aa00;
+    background: #003300;
+    color: #66ff66;
+}
+
+/* Gauges */
+.gauge {
+    margin-top: 5px;
+}
+
+.gauge.horizontal {
+    position: relative;
+    height: 20px;
+}
+
+.gauge-track {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #00aa00 0%, #ffaa00 50%, #ff0000 100%);
+    border-radius: 10px;
+    position: relative;
+}
+
+.gauge-fill {
+    height: 100%;
+    background: #0066cc;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.gauge-needle {
+    position: absolute;
+    top: -2px;
+    width: 4px;
+    height: 24px;
+    background: #fff;
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: left 0.3s ease;
+}
+
+.gauge-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 10px;
+    color: #ccc;
+}
+
+/* ROV Visualization */
+.rov-visualization {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.compass-section {
+    text-align: center;
+}
+
+.compass-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.compass-dial {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border: 3px solid #0066cc;
+    border-radius: 50%;
+    margin: 0 auto;
+    background: #001122;
+}
+
+.compass-needle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 80px;
+    background: #ffaa00;
+    transform-origin: bottom center;
+    transform: translateX(-50%) translateY(-100%);
+    z-index: 2;
+}
+
+.compass-markings {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.compass-markings .marking {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #fff;
+}
+
+.rov-wireframe {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    border: 2px solid #0066cc;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wireframe-model {
+    width: 100px;
+    height: 60px;
+    border: 2px solid #00aa00;
+    background: transparent;
+    position: relative;
+}
+
+.wireframe-model::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -20px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #00aa00;
+    background: transparent;
+}
+
+.thruster-indicators {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.thruster {
+    position: absolute;
+    width: 30px;
+    height: 20px;
+    background: #0066cc;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #fff;
+}
+
+.alarms-panel {
+    background: #330000;
+    border: 2px solid #ff0000;
+    padding: 15px;
+    text-align: center;
+    min-width: 200px;
+}
+
+.alarms-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ff0000;
+    margin-bottom: 10px;
+}
+
+.alarms-count {
+    font-size: 14px;
+    color: #fff;
+}
+
+/* Diagnostics Layout */
+.diagnostics-layout {
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.diagnostics-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.diagnostics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: calc(100% - 60px);
+}
+
+.diagnostic-panel {
+    border: 2px solid;
+    padding: 15px;
+    background: #001122;
+}
+
+.diagnostic-panel.yellow-border {
+    border-color: #ffaa00;
+}
+
+.diagnostic-panel.red-border {
+    border-color: #ff0000;
+}
+
+.diagnostic-panel.blue-border {
+    border-color: #0066cc;
+}
+
+.diagnostic-panel.green-border {
+    border-color: #00aa00;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid currentColor;
+}
+
+.panel-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.panel-type {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.panel-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.panel-content.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.diagnostic-item, .actuator-item, .light-item, .sensor-item, .compensator-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.diagnostic-item label, .actuator-item label, .light-item label, .sensor-item label, .compensator-item label {
+    font-size: 12px;
+    color: #ccc;
+}
+
+.sub-section {
+    margin-bottom: 15px;
+}
+
+.sub-section h4 {
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.actuator-grid, .lights-grid, .compensator-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* Alarm History Layout */
+.alarm-history-layout {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.alarm-history-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff0000;
+    margin-bottom: 20px;
+}
+
+.alarm-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.alarm-list {
+    background: #001122;
+    border: 1px solid #0066cc;
+    padding: 15px;
+}
+
+.alarm-item {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    color: #fff;
+}
+
+.alarm-time {
+    color: #ffaa00;
+    font-weight: bold;
+}
+
+.alarm-message {
+    color: #ff6666;
+}
+
+.alarm-details {
+    background: #001122;
+    border: 1px solid #0066cc;
+    padding: 15px;
+}
+
+/* Waveform Layout */
+.waveform-layout {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.waveform-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #66aaff;
+    margin-bottom: 20px;
+}
+
+.waveform-charts {
+    flex: 1;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+.chart-container {
+    background: #001122;
+    border: 1px solid #0066cc;
+    padding: 10px;
+    position: relative;
+}
+
+.chart-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+    color: #66aaff;
+    z-index: 2;
+}
+
+.chart-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: #66aaff;
+    z-index: 2;
+}
+
+.chart-area {
+    position: relative;
+    height: 100%;
+    background: #000;
+    border: 1px solid #333;
+}
+
+.y-axis {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 0;
+    font-size: 10px;
+    color: #66aaff;
+}
+
+.chart-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(to right, #333 1px, transparent 1px),
+        linear-gradient(to bottom, #333 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.chart-controls {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.control-icon {
+    width: 30px;
+    height: 30px;
+    background: #0066cc;
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Cameras Layout */
+.cameras-layout {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.cameras-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #66aaff;
+    margin-bottom: 20px;
+}
+
+.camera-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.camera-slot {
+    background: #001122;
+    border: 2px solid #0066cc;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.camera-placeholder {
+    flex: 1;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 14px;
+    border-bottom: 1px solid #333;
+}
+
+.camera-selector {
+    padding: 8px;
+    background: #001122;
+}
+
+.camera-selector select {
+    width: 100%;
+    background: #000;
+    color: #fff;
+    border: 1px solid #0066cc;
+    padding: 4px;
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+}
+
+.camera-selector select:focus {
+    outline: none;
+    border-color: #66aaff;
+}
+
+/* Footer */
+.hmi-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0066cc;
+    padding: 10px 20px;
+    min-height: 60px;
+    border-top: 2px solid #ff0000;
+}
+
+.footer-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.mode-indicators {
+    display: flex;
+    gap: 15px;
+}
+
+.mode-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.mode-item label {
+    font-size: 10px;
+    color: #ccc;
+    text-transform: uppercase;
+}
+
+.mode-value {
+    padding: 4px 8px;
+    border: 1px solid;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 60px;
+}
+
+.mode-value.manual {
+    background: #330000;
+    border-color: #ff0000;
+    color: #ff6666;
+}
+
+.light-indicators {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.light-indicators label {
+    font-size: 10px;
+    color: #ccc;
+    text-transform: uppercase;
+}
+
+.light-grid {
+    display: flex;
+    gap: 5px;
+}
+
+.light-indicator {
+    width: 20px;
+    height: 20px;
+    background: #333;
+    border: 1px solid #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.light-indicator.active {
+    background: #ffaa00;
+    color: #000;
+    border-color: #ffaa00;
+}
+
+.tool-indicators {
+    display: flex;
+    gap: 15px;
+}
+
+.tool-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.tool-item label {
+    font-size: 10px;
+    color: #ccc;
+    text-transform: uppercase;
+}
+
+.tool-value {
+    background: #000811;
+    border: 1px solid #0066cc;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 50px;
+}
+
+.footer-center {
+    display: flex;
+    gap: 20px;
+}
+
+.navigation-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-button {
+    background: #003366;
+    color: #fff;
+    border: 1px solid #0066cc;
+    padding: 8px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+    background: #004488;
+}
+
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.system-branding {
+    text-align: right;
+}
+
+.system-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #66aaff;
+    font-style: italic;
+}
+
+.company-name {
+    font-size: 12px;
+    color: #fff;
+}
+
+/* Gauge Fill Classes */
+.gauge-fill-25 { width: 25%; }
+.gauge-fill-30 { width: 30%; }
+.gauge-fill-100 { width: 100%; }
+
+/* Gauge Needle Classes */
+.gauge-needle-25 { left: 25%; }
+.gauge-needle-30 { left: 30%; }
+
+/* Compass Needle Classes */
+.compass-needle-245 { transform: rotate(245deg); }
+
+/* Compass Marking Classes */
+.marking-0 { transform: rotate(0deg); }
+.marking-45 { transform: rotate(45deg); }
+.marking-90 { transform: rotate(90deg); }
+.marking-135 { transform: rotate(135deg); }
+.marking-180 { transform: rotate(180deg); }
+.marking-225 { transform: rotate(225deg); }
+.marking-270 { transform: rotate(270deg); }
+.marking-315 { transform: rotate(315deg); }
+
+/* Thruster Position Classes */
+.thruster-top-left { top: 20%; left: 10%; }
+.thruster-top-right { top: 20%; right: 10%; }
+.thruster-bottom-left { bottom: 20%; left: 10%; }
+.thruster-bottom-right { bottom: 20%; right: 10%; }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .dashboard-layout {
+        flex-direction: column;
+    }
+    
+    .left-panel, .right-panel {
+        flex: none;
+        height: 200px;
+    }
+    
+    .center-panel {
+        flex: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .tab-navigation {
+        flex-wrap: wrap;
+    }
+    
+    .tab-button {
+        flex: 1 1 50%;
+    }
+    
+    .diagnostics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .camera-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(8, 1fr);
+    }
+}

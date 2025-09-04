@@ -16,6 +16,7 @@ import {
   ListItemText,
   Divider,
 } from '@mui/material';
+import image1 from '../images/image1.png';
 import {
   Refresh,
   PlayArrow,
@@ -262,8 +263,7 @@ export default function Dashboard() {
       {/* Main Dashboard Layout - 3 Column Layout */}
       <Box sx={{ 
         flex: 1, 
-        display: 'grid',
-        gridTemplateColumns: '1fr 2fr 1fr',
+        display: 'flex',
         gap: 2,
         minHeight: '800px'
       }}>
@@ -283,32 +283,32 @@ export default function Dashboard() {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
             }}>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2, color: 'primary.main' }}>
+                <Typography variant="h5" sx={{ mb: 2, color: 'primary.main', fontSize: '1.3em' }}>
                   Navigation
                 </Typography>
                 
                 {/* Depth & Altitude */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                   <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h4" sx={{ color: 'success.main', fontWeight: 'bold' }}>
+                    <Typography variant="h3" sx={{ color: 'success.main', fontWeight: 'bold', fontSize: '1.3em' }}>
                       {state.navigation.depth.toFixed(1)}m
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">DEPTH</Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '1.3em' }}>DEPTH</Typography>
                   </Box>
                   <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h4" sx={{ color: 'success.main', fontWeight: 'bold' }}>
+                    <Typography variant="h3" sx={{ color: 'success.main', fontWeight: 'bold', fontSize: '1.3em' }}>
                       {state.navigation.altitude.toFixed(1)}m
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">ALTITUDE</Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '1.3em' }}>ALTITUDE</Typography>
                   </Box>
                 </Box>
 
                 {/* Heading */}
                 <Box sx={{ textAlign: 'center', mb: 2 }}>
-                  <Typography variant="h5" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
+                  <Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 'bold', fontSize: '1.3em' }}>
                     {state.navigation.heading.toFixed(1)}°
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">HEADING</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: '1.3em' }}>HEADING</Typography>
                 </Box>
 
                 {/* Artificial Horizon */}
@@ -321,10 +321,10 @@ export default function Dashboard() {
 
                 {/* Position */}
                 <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>
                     Lat: {state.navigation.position.latitude.toFixed(4)}°
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>
                     Lon: {state.navigation.position.longitude.toFixed(4)}°
                   </Typography>
                 </Box>
@@ -345,7 +345,7 @@ export default function Dashboard() {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
             }}>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2, color: 'success.main' }}>
+                <Typography variant="h5" sx={{ mb: 2, color: 'success.main', fontSize: '1.3em' }}>
                   Thrusters
                 </Typography>
                 <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
@@ -356,12 +356,13 @@ export default function Dashboard() {
                       borderRadius: 1,
                       textAlign: 'center'
                     }}>
-                      <Typography variant="caption" sx={{ display: 'block', mb: 0.5 }}>
+                      <Typography variant="body2" sx={{ display: 'block', mb: 0.5, fontSize: '1.3em' }}>
                         {thruster.name}
                       </Typography>
-                      <Typography variant="h6" sx={{ 
+                      <Typography variant="h5" sx={{ 
                         color: thruster.power > 50 ? 'warning.main' : 'success.main',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        fontSize: '1.3em'
                       }}>
                         {thruster.power.toFixed(0)}%
                       </Typography>
@@ -374,7 +375,7 @@ export default function Dashboard() {
         </Box>
 
         {/* Center Column - Main Camera & Controls */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 2 }}>
           {/* Main Camera Feed */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -391,7 +392,7 @@ export default function Dashboard() {
             }}>
               <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                  <Typography variant="h6" sx={{ color: 'primary.main' }}>
+                  <Typography variant="h5" sx={{ color: 'primary.main', fontSize: '1.3em' }}>
                     MAIN CAMERA FEED
                   </Typography>
                   <Box sx={{ display: 'flex', gap: 1 }}>
@@ -409,9 +410,19 @@ export default function Dashboard() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   border: '1px solid rgba(0, 188, 212, 0.2)',
-                  position: 'relative'
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}>
-                  <Videocam sx={{ fontSize: 80, color: 'primary.main', opacity: 0.3 }} />
+                  <img 
+                    src={image1} 
+                    alt="ROV Camera Feed" 
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'cover',
+                      borderRadius: '8px'
+                    }} 
+                  />
                   
                   {/* Camera Overlay Info */}
                   <Box sx={{ 
@@ -422,7 +433,7 @@ export default function Dashboard() {
                     p: 1,
                     borderRadius: 1
                   }}>
-                    <Typography variant="caption" sx={{ color: 'white' }}>
+                    <Typography variant="body2" sx={{ color: 'white', fontSize: '1.3em' }}>
                       DEPTH {state.navigation.depth.toFixed(1)}m
                     </Typography>
                   </Box>
@@ -435,7 +446,7 @@ export default function Dashboard() {
                     p: 1,
                     borderRadius: 1
                   }}>
-                    <Typography variant="caption" sx={{ color: 'white' }}>
+                    <Typography variant="body2" sx={{ color: 'white', fontSize: '1.3em' }}>
                       {state.navigation.heading.toFixed(1)}°
                     </Typography>
                   </Box>
@@ -444,13 +455,13 @@ export default function Dashboard() {
                 {/* Control Panel */}
                 <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Button variant="outlined" size="small" startIcon={<Videocam />}>
+                    <Button variant="outlined" size="medium" startIcon={<Videocam />} sx={{ fontSize: '1.3em' }}>
                       Main
                     </Button>
-                    <Button variant="outlined" size="small">
+                    <Button variant="outlined" size="medium" sx={{ fontSize: '1.3em' }}>
                       Rear
                     </Button>
-                    <Button variant="outlined" size="small">
+                    <Button variant="outlined" size="medium" sx={{ fontSize: '1.3em' }}>
                       Tool
                     </Button>
                   </Box>
@@ -461,7 +472,8 @@ export default function Dashboard() {
                     size="large"
                     startIcon={<Stop />}
                     sx={{ 
-                      minWidth: 120,
+                      minWidth: 140,
+                      fontSize: '1.3em',
                       background: 'linear-gradient(45deg, #f44336, #e57373)',
                       '&:hover': {
                         background: 'linear-gradient(45deg, #d32f2f, #f44336)',
@@ -472,13 +484,13 @@ export default function Dashboard() {
                   </Button>
                   
                   <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Button variant="outlined" size="small">
+                    <Button variant="outlined" size="medium" sx={{ fontSize: '1.3em' }}>
                       Heading
                     </Button>
-                    <Button variant="outlined" size="small">
+                    <Button variant="outlined" size="medium" sx={{ fontSize: '1.3em' }}>
                       Depth
                     </Button>
-                    <Button variant="outlined" size="small">
+                    <Button variant="outlined" size="medium" sx={{ fontSize: '1.3em' }}>
                       Station
                     </Button>
                   </Box>
@@ -486,10 +498,67 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </motion.div>
+
+          {/* Active Alarms - Below Main Camera */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          >
+            <Card sx={{ 
+              background: 'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+              border: '1px solid rgba(244, 67, 54, 0.3)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              <CardContent>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="h5" sx={{ color: 'error.main', fontSize: '1.3em' }}>
+                    Active Alarms
+                  </Typography>
+                  <Chip 
+                    label={`${activeAlarms.length} ACTIVE`} 
+                    color="error" 
+                    size="small"
+                    sx={{ fontSize: '1.3em' }}
+                  />
+                </Box>
+                
+                {activeAlarms.length > 0 ? (
+                  <List dense>
+                    {activeAlarms.slice(0, 3).map((alarm, index) => (
+                      <React.Fragment key={alarm.id}>
+                        <ListItem sx={{ px: 0 }}>
+                          <ListItemIcon sx={{ minWidth: 36 }}>
+                            {alarm.severity === 'critical' ? (
+                              <Error color="error" />
+                            ) : (
+                              <Warning color="warning" />
+                            )}
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary={alarm.message}
+                            secondary={alarm.timestamp.toLocaleTimeString()}
+                            primaryTypographyProps={{ variant: 'body1', sx: { fontSize: '1.3em' } }}
+                            secondaryTypographyProps={{ variant: 'body2', sx: { fontSize: '1.3em' } }}
+                          />
+                        </ListItem>
+                        {index < activeAlarms.slice(0, 3).length - 1 && <Divider />}
+                      </React.Fragment>
+                    ))}
+                  </List>
+                ) : (
+                  <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 2, fontSize: '1.3em' }}>
+                    No active alarms
+                  </Typography>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
         </Box>
 
-        {/* Right Column - Systems Status & Alarms */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        {/* Right Column - Systems Status */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
           {/* System Status */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -503,7 +572,7 @@ export default function Dashboard() {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
             }}>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2, color: 'warning.main' }}>
+                <Typography variant="h5" sx={{ mb: 2, color: 'warning.main', fontSize: '1.3em' }}>
                   System Status
                 </Typography>
                 
@@ -514,7 +583,7 @@ export default function Dashboard() {
                     </ListItemIcon>
                     <ListItemText 
                       primary="Main Power OK"
-                      primaryTypographyProps={{ variant: 'body2' }}
+                      primaryTypographyProps={{ variant: 'body1', sx: { fontSize: '1.3em' } }}
                     />
                   </ListItem>
                   
@@ -524,7 +593,7 @@ export default function Dashboard() {
                     </ListItemIcon>
                     <ListItemText 
                       primary={`HPU #1 ${state.systemStatus.power.battery.toFixed(0)}%`}
-                      primaryTypographyProps={{ variant: 'body2' }}
+                      primaryTypographyProps={{ variant: 'body1', sx: { fontSize: '1.3em' } }}
                     />
                   </ListItem>
                   
@@ -534,7 +603,7 @@ export default function Dashboard() {
                     </ListItemIcon>
                     <ListItemText 
                       primary="HPU #2 88%"
-                      primaryTypographyProps={{ variant: 'body2' }}
+                      primaryTypographyProps={{ variant: 'body1', sx: { fontSize: '1.3em' } }}
                     />
                   </ListItem>
                   
@@ -544,7 +613,7 @@ export default function Dashboard() {
                     </ListItemIcon>
                     <ListItemText 
                       primary="Hydraulics 207 bar"
-                      primaryTypographyProps={{ variant: 'body2' }}
+                      primaryTypographyProps={{ variant: 'body1', sx: { fontSize: '1.3em' } }}
                     />
                   </ListItem>
                   
@@ -554,7 +623,7 @@ export default function Dashboard() {
                     </ListItemIcon>
                     <ListItemText 
                       primary="Insulation 5.2 MΩ"
-                      primaryTypographyProps={{ variant: 'body2' }}
+                      primaryTypographyProps={{ variant: 'body1', sx: { fontSize: '1.3em' } }}
                     />
                   </ListItem>
                 </List>
@@ -575,22 +644,22 @@ export default function Dashboard() {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
             }}>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2, color: 'info.main' }}>
+                <Typography variant="h5" sx={{ mb: 2, color: 'info.main', fontSize: '1.3em' }}>
                   Environmental
                 </Typography>
                 
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Water Temp</Typography>
-                    <Typography variant="body2" sx={{ color: 'info.main' }}>8.2°C</Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>Water Temp</Typography>
+                    <Typography variant="body1" sx={{ color: 'info.main', fontSize: '1.3em' }}>8.2°C</Typography>
                   </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Current</Typography>
-                    <Typography variant="body2" sx={{ color: 'info.main' }}>0.8 kts</Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>Current</Typography>
+                    <Typography variant="body1" sx={{ color: 'info.main', fontSize: '1.3em' }}>0.8 kts</Typography>
                   </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Visibility</Typography>
-                    <Typography variant="body2" sx={{ color: 'info.main' }}>12m</Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>Visibility</Typography>
+                    <Typography variant="body1" sx={{ color: 'info.main', fontSize: '1.3em' }}>12m</Typography>
                   </Box>
                 </Box>
               </CardContent>
@@ -610,13 +679,13 @@ export default function Dashboard() {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
             }}>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2, color: 'secondary.main' }}>
+                <Typography variant="h5" sx={{ mb: 2, color: 'secondary.main', fontSize: '1.3em' }}>
                   Lighting
                 </Typography>
                 
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <Box>
-                    <Typography variant="body2" sx={{ mb: 1 }}>MAIN LIGHTS 70%</Typography>
+                    <Typography variant="body1" sx={{ mb: 1, fontSize: '1.3em' }}>MAIN LIGHTS 70%</Typography>
                     <Slider
                       value={70}
                       disabled
@@ -624,7 +693,7 @@ export default function Dashboard() {
                     />
                   </Box>
                   <Box>
-                    <Typography variant="body2" sx={{ mb: 1 }}>TOOL LIGHTS 50%</Typography>
+                    <Typography variant="body1" sx={{ mb: 1, fontSize: '1.3em' }}>TOOL LIGHTS 50%</Typography>
                     <Slider
                       value={50}
                       disabled
@@ -632,7 +701,7 @@ export default function Dashboard() {
                     />
                   </Box>
                   <Box>
-                    <Typography variant="body2" sx={{ mb: 1 }}>CAMERA LED 100%</Typography>
+                    <Typography variant="body1" sx={{ mb: 1, fontSize: '1.3em' }}>CAMERA LED 100%</Typography>
                     <Slider
                       value={100}
                       disabled
@@ -644,61 +713,6 @@ export default function Dashboard() {
             </Card>
           </motion.div>
 
-          {/* Active Alarms */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Card sx={{ 
-              background: 'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
-              border: '1px solid rgba(244, 67, 54, 0.3)',
-              backdropFilter: 'blur(10px)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-            }}>
-              <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                  <Typography variant="h6" sx={{ color: 'error.main' }}>
-                    Active Alarms
-                  </Typography>
-                  <Chip 
-                    label={`${activeAlarms.length} ACTIVE`} 
-                    color="error" 
-                    size="small"
-                  />
-                </Box>
-                
-                {activeAlarms.length > 0 ? (
-                  <List dense>
-                    {activeAlarms.slice(0, 3).map((alarm, index) => (
-                      <React.Fragment key={alarm.id}>
-                        <ListItem sx={{ px: 0 }}>
-                          <ListItemIcon sx={{ minWidth: 36 }}>
-                            {alarm.severity === 'critical' ? (
-                              <Error color="error" />
-                            ) : (
-                              <Warning color="warning" />
-                            )}
-                          </ListItemIcon>
-                          <ListItemText 
-                            primary={alarm.message}
-                            secondary={alarm.timestamp.toLocaleTimeString()}
-                            primaryTypographyProps={{ variant: 'body2' }}
-                            secondaryTypographyProps={{ variant: 'caption' }}
-                          />
-                        </ListItem>
-                        {index < activeAlarms.slice(0, 3).length - 1 && <Divider />}
-                      </React.Fragment>
-                    ))}
-                  </List>
-                ) : (
-                  <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
-                    No active alarms
-                  </Typography>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
         </Box>
       </Box>
     </Box>

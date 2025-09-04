@@ -1,73 +1,134 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Grid,
   Typography,
   Box,
   Chip,
   IconButton,
   Tooltip,
+  Card,
+  CardContent,
+  LinearProgress,
+  Slider,
+  Button,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
 } from '@mui/material';
 import {
   Refresh,
   PlayArrow,
   Pause,
+  Stop,
+  Warning,
+  CheckCircle,
+  Error,
+  Info,
+  BatteryFull,
+  Wifi,
+  SignalCellular4Bar,
+  Cable,
+  Videocam,
+  Settings,
+  Navigation,
+  Speed,
+  Height,
+  Straighten,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useROV } from '../context/ROVContext';
-import SensorCard from '../components/Dashboard/SensorCard';
-import ThrusterControl from '../components/Dashboard/ThrusterControl';
-import NavigationDisplay from '../components/Dashboard/NavigationDisplay';
 import SystemStatusCard from '../components/Dashboard/SystemStatusCard';
-import AlarmSummary from '../components/Dashboard/AlarmSummary';
 import MissionStatus from '../components/Dashboard/MissionStatus';
+import NavigationDisplay from '../components/Dashboard/NavigationDisplay';
+import ThrusterControl from '../components/Dashboard/ThrusterControl';
+import SensorCard from '../components/Dashboard/SensorCard';
+import AlarmSummary from '../components/Dashboard/AlarmSummary';
 import AIInsights from '../components/Dashboard/AIInsights';
+
+// Artificial Horizon Component
+const ArtificialHorizon = ({ pitch, roll }: { pitch: number; roll: number }) => {
+  return (
+    <Box sx={{ 
+      width: 200, 
+      height: 200, 
+      position: 'relative',
+      borderRadius: '50%',
+      overflow: 'hidden',
+      border: '3px solid #00bcd4',
+      background: 'linear-gradient(180deg, #87CEEB 0%, #87CEEB 50%, #8B4513 50%, #8B4513 100%)',
+      transform: `rotate(${roll}deg)`,
+    }}>
+      {/* Horizon Line */}
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: 0,
+        right: 0,
+        height: 2,
+        background: '#FFD700',
+        transform: `translateY(${pitch * 2}px)`,
+      }} />
+      
+      {/* Pitch Lines */}
+      {[-30, -20, -10, 0, 10, 20, 30].map((angle) => (
+        <Box
+          key={angle}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: angle === 0 ? 60 : 40,
+            height: 1,
+            background: angle === 0 ? '#FFD700' : '#FFFFFF',
+            transform: `translate(-50%, ${angle * 2}px) rotate(${-roll}deg)`,
+            opacity: 0.8,
+          }}
+        />
+      ))}
+      
+      {/* Center Cross */}
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: 20,
+        height: 20,
+        transform: 'translate(-50%, -50%)',
+        border: '2px solid #FFD700',
+        borderRadius: '50%',
+      }} />
+    </Box>
+  );
+};
 
 export default function Dashboard() {
   const { state, dispatch } = useROV();
   const [isSimulating, setIsSimulating] = useState(true);
 
-  // Simulate real-time data updates
+  // Real-time data simulation
   useEffect(() => {
     if (!isSimulating) return;
 
     const interval = setInterval(() => {
-              // Update sensor data with realistic variations
-        const updatedSensors = state.sensors.map(sensor => {
-          const variation = (Math.random() - 0.5) * 0.1; // ±5% variation
-          const newValue = Math.max(0, sensor.value + (sensor.value * variation));
-          
-          // Determine status based on value
-          let status: 'normal' | 'warning' | 'critical' | 'offline' = 'normal';
-          if (sensor.minValue && sensor.maxValue) {
-            const percentage = (newValue - sensor.minValue) / (sensor.maxValue - sensor.minValue);
-            if (percentage > 0.9 || percentage < 0.1) {
-              status = 'warning';
-            }
-            if (percentage > 0.95 || percentage < 0.05) {
-              status = 'critical';
-            }
-          }
+      // Update sensors with realistic variations
+      const updatedSensors = state.sensors.map(sensor => ({
+        ...sensor,
+        value: sensor.value + (Math.random() - 0.5) * sensor.value * 0.05,
+        status: sensor.value > sensor.maxValue * 0.8 ? 'warning' : 
+                sensor.value < sensor.minValue * 1.2 ? 'critical' : 'normal',
+        trend: (['up', 'down', 'stable'] as const)[Math.floor(Math.random() * 3)],
+      }));
 
-          const trendValue = Math.random();
-          const trend: 'up' | 'down' | 'stable' = trendValue > 0.6 ? 'up' : trendValue > 0.3 ? 'down' : 'stable';
-
-          return {
-            ...sensor,
-            value: Number(newValue.toFixed(1)),
-            timestamp: new Date(),
-            status,
-            trend
-          };
-        });
-
-      // Update navigation data
+      // Update navigation with realistic movement
       const updatedNavigation = {
         ...state.navigation,
         heading: (state.navigation.heading + (Math.random() - 0.5) * 2) % 360,
-        depth: Math.max(0, state.navigation.depth + (Math.random() - 0.5) * 0.5),
-        altitude: Math.max(0, state.navigation.altitude + (Math.random() - 0.5) * 0.2),
-        pitch: Math.max(-90, Math.min(90, state.navigation.pitch + (Math.random() - 0.5) * 0.5)),
-        roll: Math.max(-180, Math.min(180, state.navigation.roll + (Math.random() - 0.5) * 0.5)),
+        depth: state.navigation.depth + (Math.random() - 0.5) * 0.5,
+        altitude: state.navigation.altitude + (Math.random() - 0.5) * 0.3,
+        pitch: state.navigation.pitch + (Math.random() - 0.5) * 1,
+        roll: state.navigation.roll + (Math.random() - 0.5) * 1,
+        speed: state.navigation.speed + (Math.random() - 0.5) * 0.2,
       };
 
       // Update system status
@@ -75,59 +136,55 @@ export default function Dashboard() {
         ...state.systemStatus,
         power: {
           ...state.systemStatus.power,
-          battery: Math.max(0, Math.min(100, state.systemStatus.power.battery + (Math.random() - 0.5) * 0.1)),
-          voltage: Math.max(20, Math.min(30, state.systemStatus.power.voltage + (Math.random() - 0.5) * 0.1)),
-          current: Math.max(0, Math.min(20, state.systemStatus.power.current + (Math.random() - 0.5) * 0.2)),
+          battery: Math.max(0, state.systemStatus.power.battery - 0.01),
+          voltage: 24 + (Math.random() - 0.5) * 0.5,
+          current: 15 + (Math.random() - 0.5) * 2,
         },
         communication: {
           ...state.systemStatus.communication,
-          signal: Math.max(0, Math.min(100, state.systemStatus.communication.signal + (Math.random() - 0.5) * 2)),
-          latency: Math.max(10, Math.min(200, state.systemStatus.communication.latency + (Math.random() - 0.5) * 5)),
-        }
+          signal: 85 + (Math.random() - 0.5) * 10,
+          latency: 50 + (Math.random() - 0.5) * 20,
+        },
+        tether: {
+          ...state.systemStatus.tether,
+          length: state.systemStatus.tether.length + (Math.random() - 0.5) * 0.1,
+        },
       };
 
-      dispatch({ type: 'UPDATE_SENSORS', payload: updatedSensors });
-      dispatch({ type: 'UPDATE_NAVIGATION', payload: updatedNavigation });
-      dispatch({ type: 'UPDATE_SYSTEM_STATUS', payload: updatedSystemStatus });
+      dispatch({
+        type: 'UPDATE_SENSORS',
+        payload: updatedSensors,
+      });
 
-      // Occasionally generate alarms for demonstration
-      if (Math.random() < 0.01) { // 1% chance every update
-        const alarmTypes = [
-          { message: 'High temperature detected', severity: 'warning' as const, category: 'sensor' as const },
-          { message: 'Communication latency high', severity: 'warning' as const, category: 'communication' as const },
-          { message: 'Battery level low', severity: 'critical' as const, category: 'power' as const },
-          { message: 'Thruster performance degraded', severity: 'warning' as const, category: 'thruster' as const },
-        ];
-        
-        const randomAlarm = alarmTypes[Math.floor(Math.random() * alarmTypes.length)];
-        
-        dispatch({
-          type: 'ADD_ALARM',
-          payload: {
-            id: Date.now().toString(),
-            timestamp: new Date(),
-            severity: randomAlarm.severity,
-            category: randomAlarm.category,
-            message: randomAlarm.message,
-            acknowledged: false,
-            resolved: false,
-            source: 'System Monitor',
-          }
-        });
-      }
-    }, 1000);
+      dispatch({
+        type: 'UPDATE_NAVIGATION',
+        payload: updatedNavigation,
+      });
+
+      dispatch({
+        type: 'UPDATE_SYSTEM_STATUS',
+        payload: updatedSystemStatus,
+      });
+
+      dispatch({
+        type: 'UPDATE_LAST_UPDATE',
+        payload: new Date(),
+      });
+    }, 2000);
 
     return () => clearInterval(interval);
-  }, [state.sensors, state.navigation, state.systemStatus, dispatch, isSimulating]);
+  }, [isSimulating, state, dispatch]);
 
   const handleSimulationToggle = () => {
     setIsSimulating(!isSimulating);
   };
 
   const handleRefresh = () => {
-    // Force refresh all data
     dispatch({ type: 'UPDATE_LAST_UPDATE', payload: new Date() });
   };
+
+  const activeAlarms = state.alarms.filter(alarm => !alarm.acknowledged && !alarm.resolved);
+  const criticalAlarms = activeAlarms.filter(alarm => alarm.severity === 'critical' || alarm.severity === 'emergency');
 
   return (
     <Box sx={{ 
@@ -148,7 +205,8 @@ export default function Dashboard() {
         p: 2,
         background: 'rgba(0, 0, 0, 0.3)',
         backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        borderRadius: 2
       }}>
         <Typography variant="h4" component="h1" sx={{ 
           background: 'linear-gradient(45deg, #00bcd4, #4dd0e1)',
@@ -201,114 +259,447 @@ export default function Dashboard() {
         </Box>
       </Box>
 
+      {/* Main Dashboard Layout - 3 Column Layout */}
       <Box sx={{ 
         flex: 1, 
         display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        gridTemplateRows: 'repeat(6, 1fr)',
+        gridTemplateColumns: '1fr 2fr 1fr',
         gap: 2,
         minHeight: '800px'
       }}>
-        {/* System Status - Top Left */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ 
-            gridColumn: '1 / 9', 
-            gridRow: '1 / 3',
-            height: '100%'
-          }}
-        >
-          <SystemStatusCard />
-        </motion.div>
-
-        {/* Mission Status - Top Right */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          style={{ 
-            gridColumn: '9 / 13', 
-            gridRow: '1 / 3',
-            height: '100%'
-          }}
-        >
-          <MissionStatus />
-        </motion.div>
-
-        {/* Navigation Display - Middle Left */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          style={{ 
-            gridColumn: '1 / 7', 
-            gridRow: '3 / 5',
-            height: '100%'
-          }}
-        >
-          <NavigationDisplay />
-        </motion.div>
-
-        {/* Thruster Control - Middle Right */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          style={{ 
-            gridColumn: '7 / 13', 
-            gridRow: '3 / 5',
-            height: '100%'
-          }}
-        >
-          <ThrusterControl />
-        </motion.div>
-
-        {/* Sensor Cards - Bottom Row */}
-        {state.sensors.map((sensor, index) => (
+        
+        {/* Left Column - Navigation & Thrusters */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {/* Navigation Display */}
           <motion.div
-            key={sensor.id}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card sx={{ 
+              background: 'linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+              border: '1px solid rgba(0, 188, 212, 0.3)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ mb: 2, color: 'primary.main' }}>
+                  Navigation
+                </Typography>
+                
+                {/* Depth & Altitude */}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="h4" sx={{ color: 'success.main', fontWeight: 'bold' }}>
+                      {state.navigation.depth.toFixed(1)}m
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">DEPTH</Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Typography variant="h4" sx={{ color: 'success.main', fontWeight: 'bold' }}>
+                      {state.navigation.altitude.toFixed(1)}m
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">ALTITUDE</Typography>
+                  </Box>
+                </Box>
+
+                {/* Heading */}
+                <Box sx={{ textAlign: 'center', mb: 2 }}>
+                  <Typography variant="h5" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
+                    {state.navigation.heading.toFixed(1)}°
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">HEADING</Typography>
+                </Box>
+
+                {/* Artificial Horizon */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                  <ArtificialHorizon 
+                    pitch={state.navigation.pitch} 
+                    roll={state.navigation.roll} 
+                  />
+                </Box>
+
+                {/* Position */}
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Lat: {state.navigation.position.latitude.toFixed(4)}°
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Lon: {state.navigation.position.longitude.toFixed(4)}°
+                  </Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Thruster Control */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <Card sx={{ 
+              background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+              border: '1px solid rgba(76, 175, 80, 0.3)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ mb: 2, color: 'success.main' }}>
+                  Thrusters
+                </Typography>
+                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
+                  {state.thrusters.map((thruster) => (
+                    <Box key={thruster.id} sx={{ 
+                      p: 1, 
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      borderRadius: 1,
+                      textAlign: 'center'
+                    }}>
+                      <Typography variant="caption" sx={{ display: 'block', mb: 0.5 }}>
+                        {thruster.name}
+                      </Typography>
+                      <Typography variant="h6" sx={{ 
+                        color: thruster.power > 50 ? 'warning.main' : 'success.main',
+                        fontWeight: 'bold'
+                      }}>
+                        {thruster.power.toFixed(0)}%
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </Box>
+
+        {/* Center Column - Main Camera & Controls */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {/* Main Camera Feed */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-            style={{ 
-              gridColumn: `${(index % 4) * 3 + 1} / ${(index % 4) * 3 + 4}`, 
-              gridRow: '5 / 7',
-              height: '100%'
-            }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <SensorCard sensor={sensor} />
+            <Card sx={{ 
+              flex: 1,
+              background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.8) 100%)',
+              border: '2px solid rgba(0, 188, 212, 0.3)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+              minHeight: '400px'
+            }}>
+              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="h6" sx={{ color: 'primary.main' }}>
+                    MAIN CAMERA FEED
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Chip label="REC" color="error" size="small" />
+                    <Chip label="LIVE" color="success" size="small" />
+                  </Box>
+                </Box>
+                
+                {/* Camera Display Area */}
+                <Box sx={{ 
+                  flex: 1,
+                  background: 'linear-gradient(45deg, #1a1a1a, #2a2a2a)',
+                  borderRadius: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '1px solid rgba(0, 188, 212, 0.2)',
+                  position: 'relative'
+                }}>
+                  <Videocam sx={{ fontSize: 80, color: 'primary.main', opacity: 0.3 }} />
+                  
+                  {/* Camera Overlay Info */}
+                  <Box sx={{ 
+                    position: 'absolute',
+                    top: 10,
+                    left: 10,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    p: 1,
+                    borderRadius: 1
+                  }}>
+                    <Typography variant="caption" sx={{ color: 'white' }}>
+                      DEPTH {state.navigation.depth.toFixed(1)}m
+                    </Typography>
+                  </Box>
+                  
+                  <Box sx={{ 
+                    position: 'absolute',
+                    top: 10,
+                    right: 10,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    p: 1,
+                    borderRadius: 1
+                  }}>
+                    <Typography variant="caption" sx={{ color: 'white' }}>
+                      {state.navigation.heading.toFixed(1)}°
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Control Panel */}
+                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Button variant="outlined" size="small" startIcon={<Videocam />}>
+                      Main
+                    </Button>
+                    <Button variant="outlined" size="small">
+                      Rear
+                    </Button>
+                    <Button variant="outlined" size="small">
+                      Tool
+                    </Button>
+                  </Box>
+                  
+                  <Button
+                    variant="contained"
+                    color="error"
+                    size="large"
+                    startIcon={<Stop />}
+                    sx={{ 
+                      minWidth: 120,
+                      background: 'linear-gradient(45deg, #f44336, #e57373)',
+                      '&:hover': {
+                        background: 'linear-gradient(45deg, #d32f2f, #f44336)',
+                      }
+                    }}
+                  >
+                    EMERGENCY STOP
+                  </Button>
+                  
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Button variant="outlined" size="small">
+                      Heading
+                    </Button>
+                    <Button variant="outlined" size="small">
+                      Depth
+                    </Button>
+                    <Button variant="outlined" size="small">
+                      Station
+                    </Button>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
           </motion.div>
-        ))}
+        </Box>
 
-        {/* Alarm Summary - Bottom Left */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          style={{ 
-            gridColumn: '1 / 7', 
-            gridRow: '5 / 7',
-            height: '100%'
-          }}
-        >
-          <AlarmSummary />
-        </motion.div>
+        {/* Right Column - Systems Status & Alarms */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {/* System Status */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <Card sx={{ 
+              background: 'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+              border: '1px solid rgba(255, 152, 0, 0.3)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ mb: 2, color: 'warning.main' }}>
+                  System Status
+                </Typography>
+                
+                <List dense>
+                  <ListItem sx={{ px: 0 }}>
+                    <ListItemIcon sx={{ minWidth: 36 }}>
+                      <CheckCircle color="success" />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary="Main Power OK"
+                      primaryTypographyProps={{ variant: 'body2' }}
+                    />
+                  </ListItem>
+                  
+                  <ListItem sx={{ px: 0 }}>
+                    <ListItemIcon sx={{ minWidth: 36 }}>
+                      <CheckCircle color="success" />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={`HPU #1 ${state.systemStatus.power.battery.toFixed(0)}%`}
+                      primaryTypographyProps={{ variant: 'body2' }}
+                    />
+                  </ListItem>
+                  
+                  <ListItem sx={{ px: 0 }}>
+                    <ListItemIcon sx={{ minWidth: 36 }}>
+                      <Warning color="warning" />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary="HPU #2 88%"
+                      primaryTypographyProps={{ variant: 'body2' }}
+                    />
+                  </ListItem>
+                  
+                  <ListItem sx={{ px: 0 }}>
+                    <ListItemIcon sx={{ minWidth: 36 }}>
+                      <CheckCircle color="success" />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary="Hydraulics 207 bar"
+                      primaryTypographyProps={{ variant: 'body2' }}
+                    />
+                  </ListItem>
+                  
+                  <ListItem sx={{ px: 0 }}>
+                    <ListItemIcon sx={{ minWidth: 36 }}>
+                      <CheckCircle color="success" />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary="Insulation 5.2 MΩ"
+                      primaryTypographyProps={{ variant: 'body2' }}
+                    />
+                  </ListItem>
+                </List>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-        {/* AI Insights - Bottom Right */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.9 }}
-          style={{ 
-            gridColumn: '7 / 13', 
-            gridRow: '5 / 7',
-            height: '100%'
-          }}
-        >
-          <AIInsights />
-        </motion.div>
+          {/* Environmental */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <Card sx={{ 
+              background: 'linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+              border: '1px solid rgba(33, 150, 243, 0.3)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ mb: 2, color: 'info.main' }}>
+                  Environmental
+                </Typography>
+                
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant="body2" color="text.secondary">Water Temp</Typography>
+                    <Typography variant="body2" sx={{ color: 'info.main' }}>8.2°C</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant="body2" color="text.secondary">Current</Typography>
+                    <Typography variant="body2" sx={{ color: 'info.main' }}>0.8 kts</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant="body2" color="text.secondary">Visibility</Typography>
+                    <Typography variant="body2" sx={{ color: 'info.main' }}>12m</Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Lighting Controls */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <Card sx={{ 
+              background: 'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+              border: '1px solid rgba(156, 39, 176, 0.3)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ mb: 2, color: 'secondary.main' }}>
+                  Lighting
+                </Typography>
+                
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box>
+                    <Typography variant="body2" sx={{ mb: 1 }}>MAIN LIGHTS 70%</Typography>
+                    <Slider
+                      value={70}
+                      disabled
+                      sx={{ color: 'primary.main' }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" sx={{ mb: 1 }}>TOOL LIGHTS 50%</Typography>
+                    <Slider
+                      value={50}
+                      disabled
+                      sx={{ color: 'primary.main' }}
+                    />
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" sx={{ mb: 1 }}>CAMERA LED 100%</Typography>
+                    <Slider
+                      value={100}
+                      disabled
+                      sx={{ color: 'primary.main' }}
+                    />
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Active Alarms */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            <Card sx={{ 
+              background: 'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+              border: '1px solid rgba(244, 67, 54, 0.3)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
+              <CardContent>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="h6" sx={{ color: 'error.main' }}>
+                    Active Alarms
+                  </Typography>
+                  <Chip 
+                    label={`${activeAlarms.length} ACTIVE`} 
+                    color="error" 
+                    size="small"
+                  />
+                </Box>
+                
+                {activeAlarms.length > 0 ? (
+                  <List dense>
+                    {activeAlarms.slice(0, 3).map((alarm, index) => (
+                      <React.Fragment key={alarm.id}>
+                        <ListItem sx={{ px: 0 }}>
+                          <ListItemIcon sx={{ minWidth: 36 }}>
+                            {alarm.severity === 'critical' ? (
+                              <Error color="error" />
+                            ) : (
+                              <Warning color="warning" />
+                            )}
+                          </ListItemIcon>
+                          <ListItemText 
+                            primary={alarm.message}
+                            secondary={alarm.timestamp.toLocaleTimeString()}
+                            primaryTypographyProps={{ variant: 'body2' }}
+                            secondaryTypographyProps={{ variant: 'caption' }}
+                          />
+                        </ListItem>
+                        {index < activeAlarms.slice(0, 3).length - 1 && <Divider />}
+                      </React.Fragment>
+                    ))}
+                  </List>
+                ) : (
+                  <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
+                    No active alarms
+                  </Typography>
+                )}
+              </CardContent>
+            </Card>
+          </motion.div>
+        </Box>
       </Box>
     </Box>
   );

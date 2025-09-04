@@ -92,14 +92,11 @@ export default function Layout({ children }: LayoutProps) {
           <ListItem
             key={item.text}
             onClick={() => handleNavigation(item.path)}
-            selected={location.pathname === item.path}
             sx={{
               cursor: 'pointer',
-              '&.Mui-selected': {
+              backgroundColor: location.pathname === item.path ? 'primary.dark' : 'transparent',
+              '&:hover': {
                 backgroundColor: 'primary.dark',
-                '&:hover': {
-                  backgroundColor: 'primary.dark',
-                },
               },
             }}
           >
@@ -237,11 +234,12 @@ export default function Layout({ children }: LayoutProps) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 2,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           mt: 8,
           backgroundColor: 'background.default',
-          minHeight: 'calc(100vh - 64px)',
+          height: 'calc(100vh - 64px)',
+          overflow: 'hidden',
         }}
       >
         {children}

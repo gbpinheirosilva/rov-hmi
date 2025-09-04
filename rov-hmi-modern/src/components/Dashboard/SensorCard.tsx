@@ -84,14 +84,23 @@ export default function SensorCard({ sensor }: SensorCardProps) {
       <Card
         sx={{
           height: '100%',
-          border: `2px solid ${
-            sensor.status === 'critical' ? '#f44336' :
-            sensor.status === 'warning' ? '#ff9800' :
-            sensor.status === 'normal' ? '#4caf50' : '#666'
+          background: `linear-gradient(135deg, ${
+            sensor.status === 'critical' ? 'rgba(244, 67, 54, 0.1)' :
+            sensor.status === 'warning' ? 'rgba(255, 152, 0, 0.1)' :
+            sensor.status === 'normal' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(102, 102, 102, 0.1)'
+          } 0%, rgba(0, 0, 0, 0.3) 100%)`,
+          border: `1px solid ${
+            sensor.status === 'critical' ? 'rgba(244, 67, 54, 0.3)' :
+            sensor.status === 'warning' ? 'rgba(255, 152, 0, 0.3)' :
+            sensor.status === 'normal' ? 'rgba(76, 175, 80, 0.3)' : 'rgba(102, 102, 102, 0.3)'
           }`,
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
           '&:hover': {
-            boxShadow: 4,
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4)',
+            transform: 'translateY(-2px)',
           },
+          transition: 'all 0.3s ease',
         }}
       >
         <CardContent>

@@ -4,7 +4,7 @@ import {
   CardContent,
   Typography,
   Box,
-  Grid2 as Grid,
+  Grid,
   LinearProgress,
   Chip,
 } from '@mui/material';
@@ -50,7 +50,13 @@ export default function SystemStatusCard() {
   };
 
   return (
-    <Card sx={{ height: '100%' }}>
+    <Card sx={{ 
+      height: '100%',
+      background: 'linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+      border: '1px solid rgba(0, 188, 212, 0.3)',
+      backdropFilter: 'blur(10px)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+    }}>
       <CardContent>
         <Typography variant="h6" component="h2" sx={{ mb: 3 }}>
           System Status
@@ -58,7 +64,7 @@ export default function SystemStatusCard() {
 
         <Grid container spacing={3}>
           {/* Power System */}
-          <Grid xs={12} md={4}>
+          <Grid item xs={12} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <BatteryFull sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -74,12 +80,12 @@ export default function SystemStatusCard() {
                 sx={{ height: 8, borderRadius: 4, mb: 2 }}
               />
               <Grid container spacing={1}>
-                <Grid xs={6}>
+                <Grid item xs={6}>
                   <Typography variant="caption" color="text.secondary">
                     Voltage: {systemStatus.power.voltage.toFixed(1)}V
                   </Typography>
                 </Grid>
-                <Grid xs={6}>
+                <Grid item xs={6}>
                   <Typography variant="caption" color="text.secondary">
                     Current: {systemStatus.power.current.toFixed(1)}A
                   </Typography>
@@ -89,7 +95,7 @@ export default function SystemStatusCard() {
           </Grid>
 
           {/* Communication */}
-          <Grid xs={12} md={4}>
+          <Grid item xs={12} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <Wifi sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -118,7 +124,7 @@ export default function SystemStatusCard() {
           </Grid>
 
           {/* Tether */}
-          <Grid xs={12} md={4}>
+          <Grid item xs={12} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <Cable sx={{ fontSize: 40, color: 'secondary.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>

@@ -4,7 +4,7 @@ import {
   CardContent,
   Typography,
   Box,
-  Grid2 as Grid,
+  Grid,
   Chip,
 } from '@mui/material';
 import { useROV } from '../../context/ROVContext';
@@ -21,7 +21,7 @@ export default function ThrusterControl() {
         </Typography>
         <Grid container spacing={2}>
           {thrusters.map((thruster) => (
-            <Grid xs={6} md={4} key={thruster.id}>
+            <Grid item xs={6} md={4} key={thruster.id}>
               <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                 <Typography variant="subtitle2" sx={{ mb: 1 }}>
                   {thruster.name}

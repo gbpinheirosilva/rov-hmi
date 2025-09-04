@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Grid2 as Grid,
+  Grid,
   Typography,
   Box,
   Chip,
@@ -130,111 +130,186 @@ export default function Dashboard() {
   };
 
   return (
-    <Box>
+    <Box sx={{ 
+      height: '100vh', 
+      overflow: 'hidden', 
+      display: 'flex', 
+      flexDirection: 'column',
+      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)'
+    }}>
       {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" component="h1">
-          Dashboard
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        mb: 2, 
+        flexShrink: 0,
+        p: 2,
+        background: 'rgba(0, 0, 0, 0.3)',
+        backdropFilter: 'blur(10px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+      }}>
+        <Typography variant="h4" component="h1" sx={{ 
+          background: 'linear-gradient(45deg, #00bcd4, #4dd0e1)',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          fontWeight: 'bold'
+        }}>
+          ROV Control Dashboard
         </Typography>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Tooltip title={isSimulating ? 'Pause simulation' : 'Start simulation'}>
-            <IconButton onClick={handleSimulationToggle} color="primary">
+            <IconButton 
+              onClick={handleSimulationToggle} 
+              sx={{ 
+                background: isSimulating ? 'linear-gradient(45deg, #4caf50, #66bb6a)' : 'linear-gradient(45deg, #666, #888)',
+                color: 'white',
+                '&:hover': {
+                  background: isSimulating ? 'linear-gradient(45deg, #388e3c, #4caf50)' : 'linear-gradient(45deg, #555, #777)',
+                }
+              }}
+            >
               {isSimulating ? <Pause /> : <PlayArrow />}
             </IconButton>
           </Tooltip>
           <Tooltip title="Refresh data">
-            <IconButton onClick={handleRefresh} color="primary">
+            <IconButton 
+              onClick={handleRefresh}
+              sx={{ 
+                background: 'linear-gradient(45deg, #2196f3, #42a5f5)',
+                color: 'white',
+                '&:hover': {
+                  background: 'linear-gradient(45deg, #1976d2, #2196f3)',
+                }
+              }}
+            >
               <Refresh />
             </IconButton>
           </Tooltip>
           <Chip
-            label={isSimulating ? 'Live' : 'Paused'}
+            label={isSimulating ? 'LIVE' : 'PAUSED'}
             color={isSimulating ? 'success' : 'default'}
             size="small"
+            sx={{ 
+              fontWeight: 'bold',
+              background: isSimulating ? 'linear-gradient(45deg, #4caf50, #66bb6a)' : 'linear-gradient(45deg, #666, #888)',
+              color: 'white'
+            }}
           />
         </Box>
       </Box>
 
-      <Grid container spacing={3}>
-        {/* System Status Overview */}
-        <Grid xs={12} md={8}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <SystemStatusCard />
-          </motion.div>
-        </Grid>
+      <Box sx={{ 
+        flex: 1, 
+        p: 2,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(12, 1fr)',
+        gridTemplateRows: 'repeat(6, 1fr)',
+        gap: 2,
+        height: 'calc(100vh - 120px)'
+      }}>
+        {/* System Status - Top Left */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          style={{ 
+            gridColumn: '1 / 9', 
+            gridRow: '1 / 3',
+            height: '100%'
+          }}
+        >
+          <SystemStatusCard />
+        </motion.div>
 
-        {/* Mission Status */}
-        <Grid xs={12} md={4}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <MissionStatus />
-          </motion.div>
-        </Grid>
+        {/* Mission Status - Top Right */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          style={{ 
+            gridColumn: '9 / 13', 
+            gridRow: '1 / 3',
+            height: '100%'
+          }}
+        >
+          <MissionStatus />
+        </motion.div>
 
-        {/* Navigation Display */}
-        <Grid xs={12} md={6}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <NavigationDisplay />
-          </motion.div>
-        </Grid>
+        {/* Navigation Display - Middle Left */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          style={{ 
+            gridColumn: '1 / 7', 
+            gridRow: '3 / 5',
+            height: '100%'
+          }}
+        >
+          <NavigationDisplay />
+        </motion.div>
 
-        {/* Thruster Control */}
-        <Grid xs={12} md={6}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <ThrusterControl />
-          </motion.div>
-        </Grid>
+        {/* Thruster Control - Middle Right */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          style={{ 
+            gridColumn: '7 / 13', 
+            gridRow: '3 / 5',
+            height: '100%'
+          }}
+        >
+          <ThrusterControl />
+        </motion.div>
 
-        {/* Sensor Cards */}
+        {/* Sensor Cards - Bottom Row */}
         {state.sensors.map((sensor, index) => (
-          <Grid xs={12} sm={6} md={3} key={sensor.id}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-            >
-              <SensorCard sensor={sensor} />
-            </motion.div>
-          </Grid>
+          <motion.div
+            key={sensor.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+            style={{ 
+              gridColumn: `${(index % 4) * 3 + 1} / ${(index % 4) * 3 + 4}`, 
+              gridRow: '5 / 7',
+              height: '100%'
+            }}
+          >
+            <SensorCard sensor={sensor} />
+          </motion.div>
         ))}
 
-        {/* Alarm Summary */}
-        <Grid xs={12} md={6}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            <AlarmSummary />
-          </motion.div>
-        </Grid>
+        {/* Alarm Summary - Bottom Left */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          style={{ 
+            gridColumn: '1 / 7', 
+            gridRow: '5 / 7',
+            height: '100%'
+          }}
+        >
+          <AlarmSummary />
+        </motion.div>
 
-        {/* AI Insights */}
-        <Grid xs={12} md={6}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-          >
-            <AIInsights />
-          </motion.div>
-        </Grid>
-      </Grid>
+        {/* AI Insights - Bottom Right */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.9 }}
+          style={{ 
+            gridColumn: '7 / 13', 
+            gridRow: '5 / 7',
+            height: '100%'
+          }}
+        >
+          <AIInsights />
+        </motion.div>
+      </Box>
     </Box>
   );
 }

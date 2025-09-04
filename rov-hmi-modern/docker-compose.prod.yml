@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  rov-hmi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rov-hmi-production
+    ports:
+      - "80:80"  # Direct port 80 for production
+      - "443:443"  # HTTPS port (if you add SSL later)
+    restart: always
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./logs:/var/log/nginx
+      - ./ssl:/etc/nginx/ssl:ro  # SSL certificates (optional)
+    networks:
+      - rov-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rov-hmi.rule=Host(`rov-hmi.local`)"
+      - "traefik.http.routers.rov-hmi.entrypoints=web"
+      - "traefik.http.services.rov-hmi.loadbalancer.server.port=80"
+
+  # Optional: Add a reverse proxy for multiple services
+  traefik:
+    image: traefik:v2.10
+    container_name: rov-traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "8080:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - rov-network
+    profiles:
+      - proxy
+
+networks:
+  rov-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  logs:
+    driver: local
+  ssl:
+    driver: local

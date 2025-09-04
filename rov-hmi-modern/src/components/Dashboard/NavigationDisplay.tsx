@@ -49,9 +49,9 @@ export default function NavigationDisplay() {
           </Typography>
         </Box>
 
-        <Grid container spacing={3}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
           {/* Compass Display */}
-          <Grid xs={12} md={6}>
+          <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="h4" sx={{ mb: 2, color: 'primary.main' }}>
                 {formatHeading(navigation.heading)}
@@ -156,12 +156,12 @@ export default function NavigationDisplay() {
                 </Box>
               </Box>
             </Box>
-          </Grid>
+          </Box>
 
           {/* Navigation Data */}
-          <Grid xs={12} md={6}>
-            <Grid container spacing={2}>
-              <Grid xs={6}>
+          <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+              <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <DepthIcon sx={{ color: 'info.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -171,9 +171,9 @@ export default function NavigationDisplay() {
                     Depth (m)
                   </Typography>
                 </Box>
-              </Grid>
+              </Box>
 
-              <Grid xs={6}>
+              <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <AltitudeIcon sx={{ color: 'success.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -183,9 +183,9 @@ export default function NavigationDisplay() {
                     Altitude (m)
                   </Typography>
                 </Box>
-              </Grid>
+              </Box>
 
-              <Grid xs={6}>
+              <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <PitchIcon sx={{ color: 'warning.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -195,9 +195,9 @@ export default function NavigationDisplay() {
                     Pitch
                   </Typography>
                 </Box>
-              </Grid>
+              </Box>
 
-              <Grid xs={6}>
+              <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <RollIcon sx={{ color: 'secondary.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -207,9 +207,9 @@ export default function NavigationDisplay() {
                     Roll
                   </Typography>
                 </Box>
-              </Grid>
+              </Box>
 
-              <Grid xs={12}>
+              <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <SpeedIcon sx={{ color: 'primary.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -219,28 +219,28 @@ export default function NavigationDisplay() {
                     Speed
                   </Typography>
                 </Box>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
 
         {/* Position Information */}
         <Box sx={{ mt: 3, p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
           <Typography variant="subtitle2" sx={{ mb: 1 }}>
             Position
           </Typography>
-          <Grid container spacing={2}>
-            <Grid xs={6}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+            <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
               <Typography variant="body2" color="text.secondary">
                 Latitude: {navigation.position.latitude.toFixed(6)}°
               </Typography>
-            </Grid>
-            <Grid xs={6}>
+            </Box>
+            <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
               <Typography variant="body2" color="text.secondary">
                 Longitude: {navigation.position.longitude.toFixed(6)}°
               </Typography>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Box>
       </CardContent>
     </Card>

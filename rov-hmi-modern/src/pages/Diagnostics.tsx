@@ -336,9 +336,9 @@ export default function Diagnostics() {
         <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>
           Real-time System Monitoring
         </Typography>
-        <Grid container spacing={2}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
           {timeSeriesData.map((system, index) => (
-            <Grid xs={12} md={6} key={system.name}>
+            <Box sx={{ flex: "1 1 50%", minWidth: "300px" }} key={system.name}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -399,9 +399,9 @@ export default function Diagnostics() {
                   </CardContent>
                 </Card>
               </motion.div>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Box>
 
       {/* Diagnostic Systems */}
@@ -409,11 +409,11 @@ export default function Diagnostics() {
         <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>
           System Diagnostics
         </Typography>
-        <Grid container spacing={2}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
           {diagnosticSystems.map((system, index) => {
             const isRunning = runningDiagnostics.find(d => d.id === system.id);
             return (
-              <Grid xs={12} sm={6} md={4} lg={3} key={system.id}>
+              <Box sx={{ flex: "1 1 25%", minWidth: "200px" }} key={system.id}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -504,10 +504,10 @@ export default function Diagnostics() {
                     </CardContent>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Box>
             );
           })}
-        </Grid>
+        </Box>
       </Box>
 
       {/* Running Diagnostics Status */}

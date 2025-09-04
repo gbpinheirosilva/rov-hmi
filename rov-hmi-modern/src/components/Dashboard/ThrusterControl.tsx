@@ -19,9 +19,9 @@ export default function ThrusterControl() {
         <Typography variant="h6" component="h2" sx={{ mb: 3 }}>
           Thruster Control
         </Typography>
-        <Grid container spacing={2}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
           {thrusters.map((thruster) => (
-            <Grid xs={6} md={4} key={thruster.id}>
+            <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
               <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                 <Typography variant="subtitle2" sx={{ mb: 1 }}>
                   {thruster.name}
@@ -35,9 +35,9 @@ export default function ThrusterControl() {
                   size="small"
                 />
               </Box>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </CardContent>
     </Card>
   );

@@ -473,26 +473,26 @@ export default function Mission() {
               <Typography variant="body1" sx={{ mb: 2 }}>
                 {selectedStep.description}
               </Typography>
-              <Grid container spacing={2}>
-                <Grid xs={6}>
+              <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
+                <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                   <Typography variant="subtitle2">Type:</Typography>
                   <Typography variant="body2">{selectedStep.type}</Typography>
-                </Grid>
-                <Grid xs={6}>
+                </Box>
+                <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                   <Typography variant="subtitle2">Status:</Typography>
                   <Typography variant="body2">{selectedStep.status}</Typography>
-                </Grid>
-                <Grid xs={6}>
+                </Box>
+                <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                   <Typography variant="subtitle2">Estimated Duration:</Typography>
                   <Typography variant="body2">{selectedStep.estimatedDuration} minutes</Typography>
-                </Grid>
-                <Grid xs={6}>
+                </Box>
+                <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                   <Typography variant="subtitle2">Actual Duration:</Typography>
                   <Typography variant="body2">
                     {selectedStep.actualDuration ? `${selectedStep.actualDuration} minutes` : 'Not completed'}
                   </Typography>
-                </Grid>
-              </Grid>
+                </Box>
+              </Box>
             </Box>
           )}
         </DialogContent>

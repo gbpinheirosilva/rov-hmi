@@ -62,9 +62,9 @@ export default function SystemStatusCard() {
           System Status
         </Typography>
 
-        <Grid container spacing={3}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
           {/* Power System */}
-          <Grid xs={12} md={4}>
+          <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
             <Box sx={{ textAlign: 'center' }}>
               <BatteryFull sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -79,23 +79,23 @@ export default function SystemStatusCard() {
                 color={getBatteryColor(systemStatus.power.battery)}
                 sx={{ height: 8, borderRadius: 4, mb: 2 }}
               />
-              <Grid container spacing={1}>
-                <Grid xs={6}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                   <Typography variant="caption" color="text.secondary">
                     Voltage: {systemStatus.power.voltage.toFixed(1)}V
                   </Typography>
-                </Grid>
-                <Grid xs={6}>
+                </Box>
+                <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
                   <Typography variant="caption" color="text.secondary">
                     Current: {systemStatus.power.current.toFixed(1)}A
                   </Typography>
-                </Grid>
-              </Grid>
+                </Box>
+              </Box>
             </Box>
-          </Grid>
+          </Box>
 
           {/* Communication */}
-          <Grid xs={12} md={4}>
+          <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
             <Box sx={{ textAlign: 'center' }}>
               <Wifi sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -121,10 +121,10 @@ export default function SystemStatusCard() {
                 Latency: {systemStatus.communication.latency.toFixed(0)}ms
               </Typography>
             </Box>
-          </Grid>
+          </Box>
 
           {/* Tether */}
-          <Grid xs={12} md={4}>
+          <Box sx={{ flex: "1 1 auto", minWidth: "200px" }}>
             <Box sx={{ textAlign: 'center' }}>
               <Cable sx={{ fontSize: 40, color: 'secondary.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -144,8 +144,8 @@ export default function SystemStatusCard() {
                 Tension: {systemStatus.tether.tension.toFixed(0)}N
               </Typography>
             </Box>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
 
         {/* Overall System Health */}
         <Box sx={{ mt: 3, p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>

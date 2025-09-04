@@ -7,7 +7,6 @@ import {
   Tooltip,
   Card,
   CardContent,
-  LinearProgress,
   Slider,
   Button,
   List,
@@ -25,27 +24,10 @@ import {
   Warning,
   CheckCircle,
   Error,
-  Info,
-  BatteryFull,
-  Wifi,
-  SignalCellular4Bar,
-  Cable,
   Videocam,
-  Settings,
-  Navigation,
-  Speed,
-  Height,
-  Straighten,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useROV } from '../context/ROVContext';
-import SystemStatusCard from '../components/Dashboard/SystemStatusCard';
-import MissionStatus from '../components/Dashboard/MissionStatus';
-import NavigationDisplay from '../components/Dashboard/NavigationDisplay';
-import ThrusterControl from '../components/Dashboard/ThrusterControl';
-import SensorCard from '../components/Dashboard/SensorCard';
-import AlarmSummary from '../components/Dashboard/AlarmSummary';
-import AIInsights from '../components/Dashboard/AIInsights';
 
 // Artificial Horizon Component
 const ArtificialHorizon = ({ pitch, roll }: { pitch: number; roll: number }) => {
@@ -116,8 +98,8 @@ export default function Dashboard() {
       const updatedSensors = state.sensors.map(sensor => ({
         ...sensor,
         value: sensor.value + (Math.random() - 0.5) * sensor.value * 0.05,
-        status: sensor.value > sensor.maxValue * 0.8 ? 'warning' : 
-                sensor.value < sensor.minValue * 1.2 ? 'critical' : 'normal',
+        status: (sensor.value > (sensor.maxValue || 100) * 0.8 ? 'warning' : 
+                sensor.value < (sensor.minValue || 0) * 1.2 ? 'critical' : 'normal') as 'warning' | 'critical' | 'normal' | 'offline',
         trend: (['up', 'down', 'stable'] as const)[Math.floor(Math.random() * 3)],
       }));
 
@@ -185,7 +167,6 @@ export default function Dashboard() {
   };
 
   const activeAlarms = state.alarms.filter(alarm => !alarm.acknowledged && !alarm.resolved);
-  const criticalAlarms = activeAlarms.filter(alarm => alarm.severity === 'critical' || alarm.severity === 'emergency');
 
   return (
     <Box sx={{ 
@@ -196,7 +177,7 @@ export default function Dashboard() {
       background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
       p: 2
     }}>
-      {/* Header */}
+      {/* Header
       <Box sx={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
@@ -258,7 +239,7 @@ export default function Dashboard() {
             }}
           />
         </Box>
-      </Box>
+      </Box> */}
 
       {/* Main Dashboard Layout - 3 Column Layout */}
       <Box sx={{ 
@@ -269,7 +250,7 @@ export default function Dashboard() {
       }}>
         
         {/* Left Column - Navigation & Thrusters */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
           {/* Navigation Display */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -413,15 +394,16 @@ export default function Dashboard() {
                   position: 'relative',
                   overflow: 'hidden'
                 }}>
-                  <img 
-                    src={image1} 
-                    alt="ROV Camera Feed" 
-                    style={{ 
-                      width: '100%', 
-                      height: '100%', 
+                  <Box
+                    component="img"
+                    src={image1}
+                    alt="ROV Camera Feed"
+                    sx={{
+                      width: '100%',
+                      height: '100%',
                       objectFit: 'cover',
                       borderRadius: '8px'
-                    }} 
+                    }}
                   />
                   
                   {/* Camera Overlay Info */}

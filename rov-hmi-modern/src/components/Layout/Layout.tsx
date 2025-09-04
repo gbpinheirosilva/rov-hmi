@@ -89,13 +89,25 @@ export default function Layout({ children }: LayoutProps) {
         }}
       >
         <Toolbar sx={{ minHeight: 64 }}>
-          <Typography variant="h6" noWrap component="div" sx={{ 
-            flexGrow: 1,
-            color: 'text.primary',
-            fontWeight: 'bold'
-          }}>
-            Tuna II - Deepwater Workclass ROV
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
+            <Box
+              component="img"
+              src={require('../../images/abyss-logo.png')}
+              alt="Abyss Logo"
+              sx={{ height: 50, width: 60, mr: 1 }}
+            />
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                color: 'text.primary',
+                fontWeight: 'bold',
+              }}
+            >
+              ROV Telemetry
+            </Typography>
+          </Box>
 
           {/* Status Indicators */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mr: 2 }}>

@@ -123,10 +123,10 @@ export default function Layout({ children }: LayoutProps) {
             </Tooltip>
 
             {/* Battery Status */}
-            <Tooltip title={`Battery: ${state.systemStatus.power.battery}%`}>
+            <Tooltip title={`Battery: ${state.systemStatus.power.battery.toFixed(1)}%`}>
               <Chip
                 icon={<BatteryIcon />}
-                label={`${state.systemStatus.power.battery}%`}
+                label={`${state.systemStatus.power.battery.toFixed(1)}%`}
                 color={state.systemStatus.power.battery > 20 ? 'success' : 'warning'}
                 size="small"
                 variant="outlined"
@@ -134,10 +134,10 @@ export default function Layout({ children }: LayoutProps) {
             </Tooltip>
 
             {/* Signal Strength */}
-            <Tooltip title={`Signal: ${state.systemStatus.communication.signal}%`}>
+            <Tooltip title={`Signal: ${state.systemStatus.communication.signal.toFixed(1)}%`}>
               <Chip
                 icon={<SignalIcon />}
-                label={`${state.systemStatus.communication.signal}%`}
+                label={`${state.systemStatus.communication.signal.toFixed(1)}%`}
                 color={state.systemStatus.communication.signal > 80 ? 'success' : 'warning'}
                 size="small"
                 variant="outlined"

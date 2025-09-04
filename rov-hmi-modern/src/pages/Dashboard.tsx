@@ -4,7 +4,6 @@ import {
   Box,
   Chip,
   IconButton,
-  Tooltip,
   Card,
   CardContent,
   Slider,
@@ -13,18 +12,16 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider,
 } from '@mui/material';
 import image1 from '../images/image1.png';
 import {
-  Refresh,
-  PlayArrow,
-  Pause,
   Stop,
   Warning,
   CheckCircle,
   Error,
   Videocam,
+  ChevronLeft,
+  ChevronRight,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useROV } from '../context/ROVContext';
@@ -87,11 +84,10 @@ const ArtificialHorizon = ({ pitch, roll }: { pitch: number; roll: number }) => 
 
 export default function Dashboard() {
   const { state, dispatch } = useROV();
-  const [isSimulating, setIsSimulating] = useState(true);
+  const [currentAlarmIndex, setCurrentAlarmIndex] = useState(0);
 
   // Real-time data simulation
   useEffect(() => {
-    if (!isSimulating) return;
 
     const interval = setInterval(() => {
       // Update sensors with realistic variations
@@ -156,17 +152,18 @@ export default function Dashboard() {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isSimulating, state, dispatch]);
+  }, [state, dispatch]);
 
-  const handleSimulationToggle = () => {
-    setIsSimulating(!isSimulating);
-  };
-
-  const handleRefresh = () => {
-    dispatch({ type: 'UPDATE_LAST_UPDATE', payload: new Date() });
-  };
 
   const activeAlarms = state.alarms.filter(alarm => !alarm.acknowledged && !alarm.resolved);
+
+  const handlePreviousAlarm = () => {
+    setCurrentAlarmIndex((prev) => (prev > 0 ? prev - 1 : activeAlarms.length - 1));
+  };
+
+  const handleNextAlarm = () => {
+    setCurrentAlarmIndex((prev) => (prev < activeAlarms.length - 1 ? prev + 1 : 0));
+  };
 
   return (
     <Box sx={{ 
@@ -177,69 +174,6 @@ export default function Dashboard() {
       background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
       p: 2
     }}>
-      {/* Header
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        mb: 2, 
-        flexShrink: 0,
-        p: 2,
-        background: 'rgba(0, 0, 0, 0.3)',
-        backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        borderRadius: 2
-      }}>
-        <Typography variant="h4" component="h1" sx={{ 
-          background: 'linear-gradient(45deg, #00bcd4, #4dd0e1)',
-          backgroundClip: 'text',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          fontWeight: 'bold'
-        }}>
-          ROV Control Dashboard
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Tooltip title={isSimulating ? 'Pause simulation' : 'Start simulation'}>
-            <IconButton 
-              onClick={handleSimulationToggle} 
-              sx={{ 
-                background: isSimulating ? 'linear-gradient(45deg, #4caf50, #66bb6a)' : 'linear-gradient(45deg, #666, #888)',
-                color: 'white',
-                '&:hover': {
-                  background: isSimulating ? 'linear-gradient(45deg, #388e3c, #4caf50)' : 'linear-gradient(45deg, #555, #777)',
-                }
-              }}
-            >
-              {isSimulating ? <Pause /> : <PlayArrow />}
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Refresh data">
-            <IconButton 
-              onClick={handleRefresh}
-              sx={{ 
-                background: 'linear-gradient(45deg, #2196f3, #42a5f5)',
-                color: 'white',
-                '&:hover': {
-                  background: 'linear-gradient(45deg, #1976d2, #2196f3)',
-                }
-              }}
-            >
-              <Refresh />
-            </IconButton>
-          </Tooltip>
-          <Chip
-            label={isSimulating ? 'LIVE' : 'PAUSED'}
-            color={isSimulating ? 'success' : 'default'}
-            size="small"
-            sx={{ 
-              fontWeight: 'bold',
-              background: isSimulating ? 'linear-gradient(45deg, #4caf50, #66bb6a)' : 'linear-gradient(45deg, #666, #888)',
-              color: 'white'
-            }}
-          />
-        </Box>
-      </Box> */}
 
       {/* Main Dashboard Layout - 3 Column Layout */}
       <Box sx={{ 
@@ -303,10 +237,10 @@ export default function Dashboard() {
                 {/* Position */}
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>
-                    Lat: {state.navigation.position.latitude.toFixed(4)}°
+                    Lat: {state.navigation.position.latitude.toFixed(1)}°
                   </Typography>
                   <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>
-                    Lon: {state.navigation.position.longitude.toFixed(4)}°
+                    Lon: {state.navigation.position.longitude.toFixed(1)}°
                   </Typography>
                 </Box>
               </CardContent>
@@ -345,7 +279,7 @@ export default function Dashboard() {
                         fontWeight: 'bold',
                         fontSize: '1.3em'
                       }}>
-                        {thruster.power.toFixed(0)}%
+                        {thruster.power.toFixed(1)}%
                       </Typography>
                     </Box>
                   ))}
@@ -507,28 +441,48 @@ export default function Dashboard() {
                 </Box>
                 
                 {activeAlarms.length > 0 ? (
-                  <List dense>
-                    {activeAlarms.slice(0, 3).map((alarm, index) => (
-                      <React.Fragment key={alarm.id}>
-                        <ListItem sx={{ px: 0 }}>
-                          <ListItemIcon sx={{ minWidth: 36 }}>
-                            {alarm.severity === 'critical' ? (
-                              <Error color="error" />
-                            ) : (
-                              <Warning color="warning" />
-                            )}
-                          </ListItemIcon>
-                          <ListItemText 
-                            primary={alarm.message}
-                            secondary={alarm.timestamp.toLocaleTimeString()}
-                            primaryTypographyProps={{ variant: 'body1', sx: { fontSize: '1.3em' } }}
-                            secondaryTypographyProps={{ variant: 'body2', sx: { fontSize: '1.3em' } }}
-                          />
-                        </ListItem>
-                        {index < activeAlarms.slice(0, 3).length - 1 && <Divider />}
-                      </React.Fragment>
-                    ))}
-                  </List>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <IconButton 
+                      onClick={handlePreviousAlarm}
+                      disabled={activeAlarms.length <= 1}
+                      sx={{ 
+                        color: 'primary.main',
+                        '&:disabled': { color: 'text.disabled' }
+                      }}
+                    >
+                      <ChevronLeft />
+                    </IconButton>
+                    
+                    <Box sx={{ flex: 1, textAlign: 'center' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1 }}>
+                        {activeAlarms[currentAlarmIndex]?.severity === 'critical' ? (
+                          <Error color="error" />
+                        ) : (
+                          <Warning color="warning" />
+                        )}
+                        <Typography variant="body1" sx={{ fontSize: '1.3em', fontWeight: 'bold' }}>
+                          {activeAlarms[currentAlarmIndex]?.message}
+                        </Typography>
+                      </Box>
+                      <Typography variant="body2" color="text.secondary" sx={{ fontSize: '1.3em' }}>
+                        {activeAlarms[currentAlarmIndex]?.timestamp.toLocaleTimeString()}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: '1.1em' }}>
+                        {currentAlarmIndex + 1} of {activeAlarms.length}
+                      </Typography>
+                    </Box>
+                    
+                    <IconButton 
+                      onClick={handleNextAlarm}
+                      disabled={activeAlarms.length <= 1}
+                      sx={{ 
+                        color: 'primary.main',
+                        '&:disabled': { color: 'text.disabled' }
+                      }}
+                    >
+                      <ChevronRight />
+                    </IconButton>
+                  </Box>
                 ) : (
                   <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', py: 2, fontSize: '1.3em' }}>
                     No active alarms
@@ -641,7 +595,7 @@ export default function Dashboard() {
                   </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>Visibility</Typography>
-                    <Typography variant="body1" sx={{ color: 'info.main', fontSize: '1.3em' }}>12m</Typography>
+                    <Typography variant="body1" sx={{ color: 'info.main', fontSize: '1.3em' }}>12.0m</Typography>
                   </Box>
                 </Box>
               </CardContent>

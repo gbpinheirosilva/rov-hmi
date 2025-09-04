@@ -15,7 +15,6 @@ import {
   Speed as SpeedIcon,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import GaugeChart from 'react-gauge-chart';
 import { useROV } from '../../context/ROVContext';
 
 export default function NavigationDisplay() {
@@ -52,47 +51,117 @@ export default function NavigationDisplay() {
 
         <Grid container spacing={3}>
           {/* Compass Display */}
-          <Grid item xs={12} md={6}>
+          <Grid xs={12} md={6}>
             <Box sx={{ textAlign: 'center' }}>
               <Typography variant="h4" sx={{ mb: 2, color: 'primary.main' }}>
                 {formatHeading(navigation.heading)}
               </Typography>
               
-              {/* Compass Gauge */}
-              <Box sx={{ height: 250, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <GaugeChart
-                  id="compass-gauge"
-                  nrOfLevels={8}
-                  percent={navigation.heading / 360}
-                  colors={['#FF5F6D', '#FFC371', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8']}
-                  arcWidth={0.3}
-                  needleColor="#FF6B6B"
-                  needleBaseColor="#FF6B6B"
-                  textColor="#FFFFFF"
-                  animate={true}
-                  animateDuration={1000}
-                  formatTextValue={(value) => `${Math.round(value * 360)}°`}
-                />
-              </Box>
-              
-              {/* Direction Labels */}
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1, px: 2 }}>
-                <Typography variant="caption" color="text.secondary">N</Typography>
-                <Typography variant="caption" color="text.secondary">NE</Typography>
-                <Typography variant="caption" color="text.secondary">E</Typography>
-                <Typography variant="caption" color="text.secondary">SE</Typography>
-                <Typography variant="caption" color="text.secondary">S</Typography>
-                <Typography variant="caption" color="text.secondary">SW</Typography>
-                <Typography variant="caption" color="text.secondary">W</Typography>
-                <Typography variant="caption" color="text.secondary">NW</Typography>
+              {/* Compass Circle */}
+              <Box
+                sx={{
+                  position: 'relative',
+                  width: 200,
+                  height: 200,
+                  mx: 'auto',
+                  mb: 2,
+                }}
+              >
+                {/* Compass Background */}
+                <Box
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: '50%',
+                    border: '3px solid',
+                    borderColor: 'primary.main',
+                    backgroundColor: 'background.paper',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {/* Compass Markings */}
+                  {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
+                    <Box
+                      key={angle}
+                      sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        width: angle % 90 === 0 ? 3 : 2,
+                        height: angle % 90 === 0 ? 25 : 15,
+                        backgroundColor: angle % 90 === 0 ? 'primary.main' : 'text.secondary',
+                        transformOrigin: 'bottom center',
+                        transform: `translate(-50%, -100%) rotate(${angle}deg)`,
+                      }}
+                    />
+                  ))}
+
+                  {/* Compass Needle */}
+                  <motion.div
+                    animate={{ rotate: navigation.heading }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      width: 3,
+                      height: 80,
+                      backgroundColor: getHeadingColor(navigation.heading),
+                      transformOrigin: 'bottom center',
+                      transform: 'translate(-50%, -100%)',
+                      borderRadius: '2px',
+                      zIndex: 2,
+                    }}
+                  />
+
+                  {/* Center Dot */}
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      width: 8,
+                      height: 8,
+                      backgroundColor: 'primary.main',
+                      borderRadius: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 3,
+                    }}
+                  />
+
+                  {/* Direction Labels */}
+                  {[
+                    { angle: 0, label: 'N' },
+                    { angle: 90, label: 'E' },
+                    { angle: 180, label: 'S' },
+                    { angle: 270, label: 'W' }
+                  ].map(({ angle, label }) => (
+                    <Typography
+                      key={label}
+                      variant="h6"
+                      sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: `translate(-50%, -50%) translate(${Math.sin(angle * Math.PI / 180) * 70}px, ${-Math.cos(angle * Math.PI / 180) * 70}px)`,
+                        color: 'primary.main',
+                        fontWeight: 'bold',
+                        fontSize: '1.2rem',
+                      }}
+                    >
+                      {label}
+                    </Typography>
+                  ))}
+                </Box>
               </Box>
             </Box>
           </Grid>
 
           {/* Navigation Data */}
-          <Grid item xs={12} md={6}>
+          <Grid xs={12} md={6}>
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              <Grid xs={6}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <DepthIcon sx={{ color: 'info.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -104,7 +173,7 @@ export default function NavigationDisplay() {
                 </Box>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid xs={6}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <AltitudeIcon sx={{ color: 'success.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -116,7 +185,7 @@ export default function NavigationDisplay() {
                 </Box>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid xs={6}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <PitchIcon sx={{ color: 'warning.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -128,7 +197,7 @@ export default function NavigationDisplay() {
                 </Box>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid xs={6}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <RollIcon sx={{ color: 'secondary.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -140,7 +209,7 @@ export default function NavigationDisplay() {
                 </Box>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid xs={12}>
                 <Box sx={{ textAlign: 'center', p: 2, backgroundColor: 'background.default', borderRadius: 2 }}>
                   <SpeedIcon sx={{ color: 'primary.main', mb: 1 }} />
                   <Typography variant="h5" sx={{ fontWeight: 600 }}>
@@ -161,12 +230,12 @@ export default function NavigationDisplay() {
             Position
           </Typography>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid xs={6}>
               <Typography variant="body2" color="text.secondary">
                 Latitude: {navigation.position.latitude.toFixed(6)}°
               </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid xs={6}>
               <Typography variant="body2" color="text.secondary">
                 Longitude: {navigation.position.longitude.toFixed(6)}°
               </Typography>

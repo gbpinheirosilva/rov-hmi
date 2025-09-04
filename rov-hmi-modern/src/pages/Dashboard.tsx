@@ -131,11 +131,12 @@ export default function Dashboard() {
 
   return (
     <Box sx={{ 
-      height: '100vh', 
-      overflow: 'hidden', 
+      height: '100%', 
+      overflow: 'auto', 
       display: 'flex', 
       flexDirection: 'column',
-      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)'
+      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
+      p: 2
     }}>
       {/* Header */}
       <Box sx={{ 
@@ -202,12 +203,11 @@ export default function Dashboard() {
 
       <Box sx={{ 
         flex: 1, 
-        p: 2,
         display: 'grid',
         gridTemplateColumns: 'repeat(12, 1fr)',
         gridTemplateRows: 'repeat(6, 1fr)',
         gap: 2,
-        height: 'calc(100vh - 120px)'
+        minHeight: '800px'
       }}>
         {/* System Status - Top Left */}
         <motion.div

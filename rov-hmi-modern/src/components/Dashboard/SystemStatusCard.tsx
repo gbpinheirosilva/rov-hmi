@@ -64,7 +64,7 @@ export default function SystemStatusCard() {
 
         <Grid container spacing={3}>
           {/* Power System */}
-          <Grid item xs={12} md={4}>
+          <Grid xs={12} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <BatteryFull sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -80,12 +80,12 @@ export default function SystemStatusCard() {
                 sx={{ height: 8, borderRadius: 4, mb: 2 }}
               />
               <Grid container spacing={1}>
-                <Grid item xs={6}>
+                <Grid xs={6}>
                   <Typography variant="caption" color="text.secondary">
                     Voltage: {systemStatus.power.voltage.toFixed(1)}V
                   </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid xs={6}>
                   <Typography variant="caption" color="text.secondary">
                     Current: {systemStatus.power.current.toFixed(1)}A
                   </Typography>
@@ -95,7 +95,7 @@ export default function SystemStatusCard() {
           </Grid>
 
           {/* Communication */}
-          <Grid item xs={12} md={4}>
+          <Grid xs={12} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <Wifi sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -124,7 +124,7 @@ export default function SystemStatusCard() {
           </Grid>
 
           {/* Tether */}
-          <Grid item xs={12} md={4}>
+          <Grid xs={12} md={4}>
             <Box sx={{ textAlign: 'center' }}>
               <Cable sx={{ fontSize: 40, color: 'secondary.main', mb: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>

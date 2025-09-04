@@ -4,21 +4,17 @@ import {
   Toolbar,
   Typography,
   Box,
+  Tabs,
+  Tab,
   IconButton,
   Badge,
   Avatar,
   Menu,
   MenuItem,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
   Tooltip,
+  Chip,
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
   Dashboard as DashboardIcon,
   MonitorHeart as DiagnosticsIcon,
   Videocam as CameraIcon,
@@ -40,8 +36,6 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const drawerWidth = 240;
-
 const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { text: 'Diagnostics', icon: <DiagnosticsIcon />, path: '/diagnostics' },
@@ -53,15 +47,10 @@ const menuItems = [
 ];
 
 export default function Layout({ children }: LayoutProps) {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = useROV();
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -71,114 +60,93 @@ export default function Layout({ children }: LayoutProps) {
     setAnchorEl(null);
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-    setMobileOpen(false);
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    const path = menuItems[newValue]?.path;
+    if (path) {
+      navigate(path);
+    }
+  };
+
+  const getCurrentTabIndex = () => {
+    const currentPath = location.pathname;
+    const index = menuItems.findIndex(item => item.path === currentPath);
+    return index >= 0 ? index : 0;
   };
 
   const activeAlarms = state.alarms.filter(alarm => !alarm.acknowledged && !alarm.resolved);
   const criticalAlarms = activeAlarms.filter(alarm => alarm.severity === 'critical' || alarm.severity === 'emergency');
 
-  const drawer = (
-    <Box>
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div" sx={{ color: 'primary.main' }}>
-          ROV HMI
-        </Typography>
-      </Toolbar>
-      <Divider />
-      <List>
-        {menuItems.map((item) => (
-          <ListItem
-            key={item.text}
-            onClick={() => handleNavigation(item.path)}
-            sx={{
-              cursor: 'pointer',
-              backgroundColor: location.pathname === item.path ? 'primary.dark' : 'transparent',
-              '&:hover': {
-                backgroundColor: 'primary.dark',
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: location.pathname === item.path ? 'primary.light' : 'inherit' }}>
-              {item.icon}
-            </ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* Top App Bar */}
       <AppBar
-        position="fixed"
+        position="static"
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
           backgroundColor: 'background.paper',
           borderBottom: '1px solid',
           borderBottomColor: 'divider',
+          boxShadow: 'none',
         }}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+        <Toolbar sx={{ minHeight: 64 }}>
+          <Typography variant="h6" noWrap component="div" sx={{ 
+            flexGrow: 1,
+            color: 'text.primary',
+            fontWeight: 'bold'
+          }}>
             Tuna II - Deepwater Workclass ROV
           </Typography>
 
           {/* Status Indicators */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mr: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mr: 2 }}>
             {/* Connection Status */}
             <Tooltip title={state.isConnected ? 'Connected' : 'Disconnected'}>
-              <IconButton color="inherit">
-                {state.isConnected ? (
-                  <WifiIcon color="success" />
-                ) : (
-                  <WifiOffIcon color="error" />
-                )}
-              </IconButton>
+              <Chip
+                icon={state.isConnected ? <WifiIcon /> : <WifiOffIcon />}
+                label={state.isConnected ? 'Connected' : 'Disconnected'}
+                color={state.isConnected ? 'success' : 'error'}
+                size="small"
+                variant="outlined"
+              />
             </Tooltip>
 
             {/* Battery Status */}
             <Tooltip title={`Battery: ${state.systemStatus.power.battery}%`}>
-              <IconButton color="inherit">
-                <BatteryIcon 
-                  color={state.systemStatus.power.battery > 20 ? 'success' : 'warning'} 
-                />
-              </IconButton>
+              <Chip
+                icon={<BatteryIcon />}
+                label={`${state.systemStatus.power.battery}%`}
+                color={state.systemStatus.power.battery > 20 ? 'success' : 'warning'}
+                size="small"
+                variant="outlined"
+              />
             </Tooltip>
 
             {/* Signal Strength */}
             <Tooltip title={`Signal: ${state.systemStatus.communication.signal}%`}>
-              <IconButton color="inherit">
-                <SignalIcon 
-                  color={state.systemStatus.communication.signal > 80 ? 'success' : 'warning'} 
-                />
-              </IconButton>
+              <Chip
+                icon={<SignalIcon />}
+                label={`${state.systemStatus.communication.signal}%`}
+                color={state.systemStatus.communication.signal > 80 ? 'success' : 'warning'}
+                size="small"
+                variant="outlined"
+              />
             </Tooltip>
 
             {/* Alarms */}
             <Tooltip title={`${activeAlarms.length} active alarms`}>
-              <IconButton color="inherit">
-                <Badge badgeContent={activeAlarms.length} color="error">
-                  <AlarmIcon color={criticalAlarms.length > 0 ? 'error' : 'inherit'} />
-                </Badge>
-              </IconButton>
+              <Badge badgeContent={activeAlarms.length} color="error">
+                <Chip
+                  icon={<AlarmIcon />}
+                  label="Alarms"
+                  color={criticalAlarms.length > 0 ? 'error' : 'default'}
+                  size="small"
+                  variant="outlined"
+                />
+              </Badge>
             </Tooltip>
 
             {/* Current Time */}
-            <Typography variant="body2" sx={{ minWidth: 120 }}>
+            <Typography variant="body2" sx={{ minWidth: 80, color: 'text.secondary' }}>
               {format(new Date(), 'HH:mm:ss')}
             </Typography>
           </Box>
@@ -198,48 +166,48 @@ export default function Layout({ children }: LayoutProps) {
             </Avatar>
           </IconButton>
         </Toolbar>
+
+        {/* Navigation Tabs */}
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={getCurrentTabIndex()}
+            onChange={handleTabChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{
+              '& .MuiTab-root': {
+                minHeight: 48,
+                textTransform: 'none',
+                fontWeight: 500,
+              },
+              '& .Mui-selected': {
+                color: 'primary.main',
+                fontWeight: 600,
+              },
+            }}
+          >
+            {menuItems.map((item, index) => (
+              <Tab
+                key={item.path}
+                icon={item.icon}
+                label={item.text}
+                iconPosition="start"
+                sx={{ minWidth: 120 }}
+              />
+            ))}
+          </Tabs>
+        </Box>
       </AppBar>
 
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-
+      {/* Main Content Area */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          p: 2,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          mt: 8,
           backgroundColor: 'background.default',
-          height: 'calc(100vh - 64px)',
           overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         {children}
@@ -253,15 +221,11 @@ export default function Layout({ children }: LayoutProps) {
         onClick={handleProfileMenuClose}
       >
         <MenuItem onClick={() => navigate('/settings')}>
-          <ListItemIcon>
-            <SettingsIcon fontSize="small" />
-          </ListItemIcon>
+          <SettingsIcon fontSize="small" sx={{ mr: 1 }} />
           Settings
         </MenuItem>
         <MenuItem onClick={handleProfileMenuClose}>
-          <ListItemIcon>
-            <AccountIcon fontSize="small" />
-          </ListItemIcon>
+          <AccountIcon fontSize="small" sx={{ mr: 1 }} />
           Profile
         </MenuItem>
       </Menu>

@@ -233,12 +233,12 @@ export function ROVProvider({ children }: ROVProviderProps) {
 
     // Initialize thrusters
     const initialThrusters: ThrusterData[] = [
-      { id: 't1', name: 'Port Aft', position: 'port-aft', power: 50, direction: 0, temperature: 25, status: 'active' },
-      { id: 't2', name: 'Port Fore', position: 'port-fore', power: 50, direction: 0, temperature: 25, status: 'active' },
-      { id: 't3', name: 'Starboard Aft', position: 'starboard-aft', power: 50, direction: 0, temperature: 25, status: 'active' },
-      { id: 't4', name: 'Starboard Fore', position: 'starboard-fore', power: 50, direction: 0, temperature: 25, status: 'active' },
-      { id: 't5', name: 'Vertical Port', position: 'vertical-port', power: 50, direction: 0, temperature: 25, status: 'active' },
-      { id: 't6', name: 'Vertical Starboard', position: 'vertical-starboard', power: 50, direction: 0, temperature: 25, status: 'active' }
+      { id: 't1', name: 'Port Aft', position: 'port-aft', power: 52.8, direction: 0, temperature: 26, status: 'active' },
+      { id: 't2', name: 'Port Fore', position: 'port-fore', power: 47.5, direction: 0, temperature: 25, status: 'active' },
+      { id: 't3', name: 'Starboard Aft', position: 'starboard-aft', power: 50.0, direction: 0, temperature: 24, status: 'active' },
+      { id: 't4', name: 'Starboard Fore', position: 'starboard-fore', power: 49.8, direction: 0, temperature: 25, status: 'active' },
+      { id: 't5', name: 'Vertical Port', position: 'vertical-port', power: 51.1, direction: 0, temperature: 27, status: 'active' },
+      { id: 't6', name: 'Vertical Starboard', position: 'vertical-starboard', power: 52.3, direction: 0, temperature: 25, status: 'active' }
     ];
 
     // Initialize cameras

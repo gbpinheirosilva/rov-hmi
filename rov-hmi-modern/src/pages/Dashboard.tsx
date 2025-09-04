@@ -235,14 +235,14 @@ export default function Dashboard() {
                 </Box>
 
                 {/* Position */}
-                <Box sx={{ textAlign: 'center' }}>
+                {/* <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>
                     Lat: {state.navigation.position.latitude.toFixed(1)}°
                   </Typography>
                   <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1.3em' }}>
                     Lon: {state.navigation.position.longitude.toFixed(1)}°
                   </Typography>
-                </Box>
+                </Box> */}
               </CardContent>
             </Card>
           </motion.div>
@@ -534,11 +534,11 @@ export default function Dashboard() {
                   </ListItem>
                   
                   <ListItem sx={{ px: 0 }}>
-                    <ListItemIcon sx={{ minWidth: 36 }}>
-                      <Warning color="warning" />
+                  <ListItemIcon sx={{ minWidth: 36 }}>
+                      <CheckCircle color="success" />
                     </ListItemIcon>
                     <ListItemText 
-                      primary="HPU #2 88%"
+                      primary={`HPU #2 100%`}
                       primaryTypographyProps={{ variant: 'body1', sx: { fontSize: '1.3em' } }}
                     />
                   </ListItem>

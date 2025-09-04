@@ -42,8 +42,8 @@ const menuItems = [
   { text: 'Cameras', icon: <CameraIcon />, path: '/cameras' },
   { text: 'Alarms', icon: <AlarmIcon />, path: '/alarms' },
   { text: 'Mission', icon: <MissionIcon />, path: '/mission' },
-  { text: 'Analytics', icon: <AnalyticsIcon />, path: '/analytics' },
-  { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
+  // { text: 'Analytics', icon: <AnalyticsIcon />, path: '/analytics' },
+  // { text: 'Settings', icon: <SettingsIcon />, path: '/settings' },
 ];
 
 export default function Layout({ children }: LayoutProps) {

@@ -369,8 +369,20 @@ export default function Dashboard() {
                 </Box>
 
                 {/* Control Panel */}
-                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
+                <Box sx={{ 
+                  mt: 2, 
+                  display: 'flex', 
+                  flexDirection: { xs: 'column', md: 'row' },
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  gap: 2
+                }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    gap: 1,
+                    flexWrap: 'wrap',
+                    justifyContent: { xs: 'center', md: 'flex-start' }
+                  }}>
                     <Button variant="outlined" size="medium" startIcon={<Videocam />} sx={{ fontSize: '1.3em' }}>
                       Main
                     </Button>
@@ -388,18 +400,24 @@ export default function Dashboard() {
                     size="large"
                     startIcon={<Stop />}
                     sx={{ 
-                      minWidth: 140,
+                      minWidth: { xs: '100%', sm: 140 },
                       fontSize: '1.3em',
                       background: 'linear-gradient(45deg, #f44336, #e57373)',
                       '&:hover': {
                         background: 'linear-gradient(45deg, #d32f2f, #f44336)',
-                      }
+                      },
+                      order: { xs: -1, md: 0 }
                     }}
                   >
                     EMERGENCY STOP
                   </Button>
                   
-                  <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    gap: 1,
+                    flexWrap: 'wrap',
+                    justifyContent: { xs: 'center', md: 'flex-end' }
+                  }}>
                     <Button variant="outlined" size="medium" sx={{ fontSize: '1.3em' }}>
                       Heading
                     </Button>
@@ -422,8 +440,12 @@ export default function Dashboard() {
             transition={{ duration: 0.5, delay: 0.7 }}
           >
             <Card sx={{ 
-              background: 'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
-              border: '1px solid rgba(244, 67, 54, 0.3)',
+              background: activeAlarms.length > 0 
+                ? 'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)'
+                : 'linear-gradient(135deg, rgba(158, 158, 158, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
+              border: activeAlarms.length > 0 
+                ? '1px solid rgba(244, 67, 54, 0.3)'
+                : '1px solid rgba(158, 158, 158, 0.3)',
               backdropFilter: 'blur(10px)',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
             }}>
